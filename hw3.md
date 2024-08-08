@@ -1,7 +1,7 @@
 CS 3550 Assignment 3 (Django)
 ==========================
 
-**Status**: Final \
+**Status**: Draft \
 **Due**: Phase 1 due **20 Oct**, Phase 2--6 due **27 Oct**
 
 About

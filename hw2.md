@@ -1,7 +1,7 @@
 CS 3550 Assignment 2 (CSS)
 ==========================
 
-**Status**: Final \
+**Status**: Draft \
 **Due**: Phase 1 due **15 Sep**, Phase 2--5 due **22 Sep**
 
 About

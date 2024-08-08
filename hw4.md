@@ -1,7 +1,7 @@
 CS 3550 Assignment 4 (AWS)
 ==========================
 
-**Status**: Final \
+**Status**: Draft \
 **Due**: Phase 1 due **3 Nov**, Phase 2--5 due **10 Nov**
 
 About

@@ -23,14 +23,19 @@ As well as homework assignments:
 * [Homework 1 (HTML)](hw1.md) \
   Due 1 Sep and 8 Sep.
 * [Homework 2 (CSS)](hw2.md) \
+  Currently a draft \
   Due 15 Sep and 22 Sep.
 * [Homework 3 (Django)](hw3.md) \
+  Currently a draft \
   Due 20 Oct and 27 Oct.
 * [Homework 4 (AWS)](hw4.md) \
+  Currently a draft \
   Due 3 Nov and 10 Nov.
 * [Homework 5 (Permissions)](hw5.md) \
+  Currently a draft \
   Due 17 Nov and 24 Nov.
 * [Homework 6 (JavaScript)](hw6.md) \
+  Currently a draft \
   Due 1 Dec and 8 Dec.
 
 You can see draft assignments by choosing them from the file list
