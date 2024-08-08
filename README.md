@@ -1,4 +1,4 @@
-CS 3550 Web Software Development I, Fall 2023
+CS 3550 Web Software Development I, Fall 2024
 =============================================
 
 The purpose of this course is teaching you the basics of developing
@@ -7,9 +7,10 @@ basic web applications that interact with a database.
 
 This repository contains written material for the class, including:
 
+* [Syllabus](syllabus.md) \
+  Course structure, rules, grading policies, and so on.
 * [Study Guide](study-guide.md) \
   Covers what you're expected to know for the midterm and final.
-  Current to 8 December.
 * [Installation Guide](install.md) \
   How to install software needed in class.
 * [Various Notes](notes.md) \
