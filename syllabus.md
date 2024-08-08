@@ -46,6 +46,8 @@ instructors reserve the option to curve any grade component if they
 judge that it was more difficult than intended. The grade components
 are:
 
+| Component                | Weight           |
+| ------------------------ | ---------------- |
 | Homework (7 assignments) | 56% (so 8% each) |
 | Midterm                  | 22%              |
 | Final                    | 22%              |
