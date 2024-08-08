@@ -1,13 +1,13 @@
 CS 3550 Syllabus, Fall 2024
 ===========================
 
-**Instructor**: Pavel Panchekha, [pavpan@cs.utah.edu](mailto:pavpan@cs.utah.edu)
-**Assistants**: Seng, Brensen, Seth
-**Lecture**: Mon/Wed 4:35–5:55 in WEB L101
-**Midterm**: Wed 2 October during class in WEB L101
-**Final**: Mon 9 December at 6:00pm in WEB L101
-**Github**: https://github.com/Utah-CS3550-Fall-2024
-**Office Hours**: TODO, you'll need a Google account
+**Instructor**: Pavel Panchekha, [pavpan@cs.utah.edu](mailto:pavpan@cs.utah.edu) \
+**Assistants**: Seng, Brensen, Seth \
+**Lecture**: Mon/Wed 4:35–5:55 in WEB L101 \
+**Midterm**: Wed 2 October during class in WEB L101 \
+**Final**: Mon 9 December at 6:00pm in WEB L101 \
+**Github**: https://github.com/Utah-CS3550-Fall-2024 \
+**Office Hours**: TODO, you'll need a Google account \
 **Piazza**: TODO
 
 # About the Course
