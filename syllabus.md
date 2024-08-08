@@ -150,6 +150,6 @@ drop/withdrawal, student mental health, student support, and academic
 misconduct, as well as the [Kahlert School of Computing's academic
 policies][ksoc-policy] and the [College of Engineering policies][coe-policy].
 
-[u-policy]: xxx
+[u-policy]: https://cte.utah.edu/instructor-education/syllabus/institutional-policies.php
 [ksoc-policy]: https://handbook.cs.utah.edu/current/Academics/policies.php
 [coe-policy]: https://www.coe.utah.edu/students/current/semester-guidelines/
