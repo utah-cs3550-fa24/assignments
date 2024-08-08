@@ -8,7 +8,7 @@ CS 3550 Syllabus, Fall 2024
 **Final**: Mon 9 December at 6:00pm in WEB L101 \
 **Github**: https://github.com/Utah-CS3550-Fall-2024 \
 **Office Hours**: TODO, you'll need a Google account \
-**Piazza**: TODO
+**Piazza**: https://piazza.com/class/lzlt08sa4gk3k0/
 
 # About the Course
 
