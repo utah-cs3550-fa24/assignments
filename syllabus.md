@@ -103,9 +103,9 @@ The following is an aspirational course schedule. It may change as the course pr
 |---------------|-----------------------------------|
 | August 19     | HTML                              |
 | August 26     | CSS, **Homework 1 due**           |
-| September 2   | Layout                            |
-| September 9   | Back-end, **Homework 2 due**      |
-| September 16  | Models                            |
+| September 2   | Flex-box                          |
+| September 9   | Layout, **Homework 2 due**        |
+| September 16  | Back-ends                         |
 | September 23  | Data modeling, **Homework 3 due** |
 | September 30  | Review and **Midterm**            |
 | October 7     | *Fall break*                      |

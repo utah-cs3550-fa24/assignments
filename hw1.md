@@ -1,7 +1,7 @@
 CS 3550 Assignment 1 (HTML)
 ===========================
 
-**Status**: Final \
+**Status**: Draft \
 **Due**: Phase 1 due **23 Aug**. Phase 2--5 due **30 Aug**.
 
 In this assignment, you will set up a web server and write initial
