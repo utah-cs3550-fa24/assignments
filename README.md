@@ -23,22 +23,26 @@ As well as homework assignments:
 * [Homework 1 (HTML)](hw1.md) \
   Currently a draft. \
   Due 23 Aug and 30 Aug.
-* [Homework 2 (CSS)](hw2.md) \
-  Currently a draft. \
+* Homework 2 (CSS) \
+  Currently copied from last year. \
   Due 6 Sep and 13 Sep.
-* [Homework 3 (Django)](hw3.md) \
-  Currently a draft. \
+* Homework 3 (Templates) \
+  Currently copied from last year. \
   Due 20 Sep and 27 Sep.
-* [Homework 4 (AWS)](hw4.md) \
-  Currently a draft. \
+* Homework 4 (Forms) \
+  Not yet written
   Due 18 Oct and 25 Oct.
-* [Homework 5 (Permissions)](hw5.md) \
-  Currently a draft. \
+* Homework 5 (Permissions) \
+  Currently copied from last year. \
+  Due 1 Nov and 8 Nov.
+* Homework 6 (JavaScript) \
+  Currently copied from last year. \
   Due 15 Nov and 22 Nov.
-* [Homework 6 (JavaScript)](hw6.md) \
-  Currently a draft. \
+* Homework 7 (AWS) \
+  Currently copied from last year. \
   Due 29 Nov and 6 Dec.
 
-You can see draft assignments by choosing them from the file list
-above. However, until those assignments are finalized the instructor
-can change them, including quite radically and without notice.
+Assignments marked "draft" should be quite close to their final
+version and will be finalized a week before their pre-submission is
+due. Assignments marked "copied from last year" should be expected to
+change quite radically before being assigned.
