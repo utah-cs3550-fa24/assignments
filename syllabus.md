@@ -7,7 +7,7 @@ CS 3550 Syllabus, Fall 2024
 **Midterm**: Wed 2 October during class in WEB L101 \
 **Final**: Mon 9 December at 6:00pm in WEB L101 \
 **Github**: https://github.com/Utah-CS3550-Fall-2024 \
-**Office Hours**: [https://shorturl.at/mHZxP][https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3og8Q-H_LJumRzhRp3zihSZbaqS6HfCzeFKagT0ik70diVDqEnCxzdX4KHt2jg3jHO8ZStEdvf], you'll need a Google account \
+**Office Hours**: [https://shorturl.at/mHZxP](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3og8Q-H_LJumRzhRp3zihSZbaqS6HfCzeFKagT0ik70diVDqEnCxzdX4KHt2jg3jHO8ZStEdvf), you'll need a Google account \
 **Piazza**: https://piazza.com/class/lzlt08sa4gk3k0/
 
 # About the Course
