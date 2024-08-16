@@ -21,7 +21,6 @@ This repository contains written material for the class, including:
 As well as homework assignments:
 
 * [Homework 1 (HTML)](hw1.md) \
-  Currently a draft. \
   Due 23 Aug and 30 Aug.
 * Homework 2 (CSS) \
   Currently copied from last year. \
