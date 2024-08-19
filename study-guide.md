@@ -12,7 +12,7 @@ You should be able to use HTML to:
 
 - Write valid HTML using the doctype, `<meta>`, `<link>`, `<title>`
 - Style text using `<a>`, `<em>`, `<strong>`, `<code>`, `<img>`
-- Structuring text using `<p>`, `<h1>` though `<h6>`, `<pre>`
+- Structuring text using `<p>`, `<h1>` through `<h6>`, `<pre>`
 - Structure pages using `<nav>`, `<header>`, `<footer>`, `<main>`
 - Separate sections with `<article>`, `<section>`, `<aside>`
 - Write lists using `<ul>`, `<ol>`, `<menu>`, `<li>`
