@@ -180,8 +180,8 @@ HTML needs to reflect.
 
 
 
-Phase 3: The rest of the assignments page
------------------------------------------
+Phase 3: The rest of the assignment page
+----------------------------------------
 
 Copy your `index.html` file to a new file, `assignment.html`. Close
 `index.html` (we'll return to it in Phase 4) and open the new
