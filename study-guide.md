@@ -17,7 +17,7 @@ You should be able to use HTML to:
 - Separate sections with `<article>`, `<section>`, `<aside>`
 - Write lists using `<ul>`, `<ol>`, `<menu>`, `<li>`
 - Write tables using `<table>`, `<thead>`, `<tfoot>`, `<tr>`, `<td>`, and `<th>`
-- Use `&lt;`, `&gt;`, `&amp;`, `&quot;` escapes and `<!-- -->` comments
+- Use `&lt;`, `&gt;`, `&amp;` escapes and `<!-- -->` comments
 
 You should be able to look at a screenshot of a website or application
 and write valid, semantically-meaningful HTML for it using standard
