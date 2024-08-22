@@ -26,7 +26,10 @@ tags.
 You should know key accessibility requirements, such as proper heading
 hierarchies, textual alternatives for images, and language attributes.
 You should be able to identify when HTML code is missing these
-accessiblity requirements.
+accessiblity requirements. You should know the `lang`, `alt`, and
+`title` attributes, and the `<label>` element. For `<input>` elements,
+you should know the `checkbox`, `radio`, `file`, `image`, `date`,
+`time`, `text`, `number`, `email`, and `tel` types.
 
 CSS
 ---
