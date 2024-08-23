@@ -22,8 +22,8 @@ As well as homework assignments:
 
 * [Homework 1 (HTML)](hw1.md) \
   Due 23 Aug and 30 Aug.
-* Homework 2 (CSS) \
-  Currently copied from last year. \
+* [Homework 2 (CSS)](hw2.md) \
+  Currently a draft. \
   Due 6 Sep and 13 Sep.
 * Homework 3 (Templates) \
   Currently copied from last year. \
