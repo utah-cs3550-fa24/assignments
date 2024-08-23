@@ -154,7 +154,7 @@ not typically need to write `<html>`, `<head>`, or `<body>` tags.
 Look at the screenshot at the beginning of this section. At the top of
 the screenshot, there is a gray bar containing the words "CS 3550",
 "Assignments", and "Profile". Write HTML for this navigation bar. Make
-"Assignments" link to `assignments.html` and "Profile" link to
+"Assignments" link to `index.html` and "Profile" link to
 `profile.html`. (This way the links will all work when you add more
 pages later.) "CS 3550" does not need to be clickable.
 
