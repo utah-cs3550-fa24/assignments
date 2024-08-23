@@ -42,7 +42,7 @@ instructors immediately.
 Third, run the following set of commands:
 
     cd <path>
-    python3 -m django startproject cs3550 .
+    python3 -m django startproject cs3550 "."
 
 In the first command, replace `<path>` with whatever path is necessary
 to get to the Git repository. The second command creates a Django
