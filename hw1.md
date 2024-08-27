@@ -235,10 +235,8 @@ look like:
 |-------------------------------------------------------|-------------------------------------------------------|
 | ![The assignments page](screenshots/assignments.png) | ![The submissions page](screenshots/submissions.png) |
 | `index.html`| `submissions.html` |
-| | |
 | ![The profile page](screenshots/profile.png)         | ![The login page](screenshots/login.png)             |
 | `profile.html`| `login.html` |
-| | |
 
 In each case, you're building the "TA view". Later on in the class,
 you'll add support for both students and TAs and different users will
