@@ -1,7 +1,7 @@
 CS 3550 Assignment 2 (CSS)
 ==========================
 
-**Status**: Draft \
+**Status**: Final \
 **Due**: Phase 1 due **6 Sep**, Phase 2--5 due **13 Sep**
 
 About
@@ -20,6 +20,9 @@ provided. You will thereby demonstrate that you can:
 The assignment is due Friday, 13 Sep before midnight. The course's
 normal extension policy applies. Hand in your finished assignment by
 pushing it to your repository on Github.
+
+It may be useful to address any feedback you received on Homework 1
+before or as you work on this assignment.
 
 Phase 1: Serving a CSS file
 ---------------------------
@@ -59,13 +62,13 @@ continue to pass Phase 1.)
 
 When writing any CSS for the phases below, stick to the following
 rules. You don't need to memorize them: refer back here as you do the
-assignment).
+assignment.
 
 - All lengths should use `rem` units, except borders and shadows,
   which should use `px`, and a few places where `%` are allowed,
   indicated below.
 - Always use unitless multipliers for `line-height`
-- Do not use any `display` mode except the default and `flex`
+- Do not use any `display` mode except the default one and `flex`
 - Do not use tables for layout. (You should still use them for tabular data.)
 - Do not use any colors besides `black`, `#444`, `gray`, `#ddd`, and
   `white`, plus `#204a87` and `#b1c3de`
@@ -177,7 +180,8 @@ the "weight" column in `index.html` and the "graded" column in
 `profile.html`. You will need to add the same `class` to each cell in
 that column. (This is tedious now, but once we generate some of this
 HTML with templates, some of the code duplication will go away.) The
-header for that column should also be right-aligned.
+header for that column should also be right-aligned. The other headers
+should be left-aligned.
 
 Now consider two pages that contain forms: the `submissions.html` page
 and the `login.html` page.
