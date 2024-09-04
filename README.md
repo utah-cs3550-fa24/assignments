@@ -26,7 +26,6 @@ As well as homework assignments:
   Currently a draft. \
   Due 6 Sep and 13 Sep.
 * Homework 3 (Templates) \
-  Currently copied from last year. \
   Due 20 Sep and 27 Sep.
 * Homework 4 (Forms) \
   Not yet written
