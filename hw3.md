@@ -2,22 +2,21 @@ CS 3550 Assignment 3 (Django)
 ==========================
 
 **Status**: Draft \
-**Due**: Phase 1 due **20 Oct**, Phase 2--6 due **27 Oct**
+**Due**: Phase 1 due **20 Sep**, Phase 2--6 due **27 Sep**
 
 About
 -----
 
 In this assignment you'll write a backend for the frontend you
 developed in [Assignmets 1](hw1.md) [and 2](hw2.md). The grading
-application will then become usable: all pages will be generated from
-a database, and you will be able to grade students' assignments:
+application will then generate all pages using a database, and you'll
+be able to edit the data via Django's admin interface. You will:
 
 - Create models in Django to describe your application's data
 - Query those models to extract view-relevant data
 - Use templates to generate views from data
-- Modify data in response to form submissions
 
-The assignment is due Friday, 27 Oct before midnight. The course's
+The assignment is due Friday, 27 Sep before midnight. The course's
 normal extension policy applies. Hand in your finished assignment by
 pushing it to your repository on Github.
 
@@ -28,23 +27,23 @@ Create a Django application called `grades` by running:
 
     python3 manage.py startapp grades
 
-As usual, you may need to use `python` instead of `python3`, or give
-the full path to your Python executable, just as you did for [Homework
-1](hw1.md). See the [installation guide](install.md) for more.
+As usual, you may need to use `python` or `py` instead of `python3`,
+or give the full path to your Python executable, just as you did for
+[Homework 1](hw1.md). See the [installation guide](install.md) for
+more.
 
 This command should succeed and create a directory called `grades`
-with files inside it called `models.py` and `views.py`. (It will also
-contain `admin.py` and `tests.py`, which we won't be using.)
+with files inside it called `models.py`, `admin.py`, and `views.py`.
+(It will also contain `tests.py`, which we won't be using.)
 
 Open the `settings.py` file in your `cs3550` directory. Find the
-portion that defines `INSTALLED_APPS` and add the string `'grades'` to
+lines that define `INSTALLED_APPS` and add the string `'grades'` to
 the list. This means that the `grades` app you just created is now
 part of the project.
 
-Inside the `grades` directory contain a subdirectory called
-`templates`. Move all of the HTML files in `static` to this new
-`templates` folder. (You can also delete `test.html`, if you still
-have it.)
+Inside the `grades` directory find a subdirectory called `templates`.
+Move all of the HTML files in `static` to this new `templates` folder.
+(You can also delete `test.html`, if you still have it.)
 
 Open `views.py` in the `grades` directory and add the following line
 to the top of the file:
@@ -53,16 +52,15 @@ to the top of the file:
     
 Add the following lines to the bottom:
 
-    def assignments(request):
-        return render(request, "assignments.html")
+    def index(request):
+        return render(request, "index.html")
 
-Make similar definitions for the other four pages (`index`,
-`submissions`, `profile`, and `login_form`). For the `index` and
+Make similar definitions for the other four pages (`assignment`,
+`submissions`, `profile`, and `login_form`). For the `assignment` and
 `submissions` view, the function should take an additional parameter,
 `assignment_id`. Make sure to use the correct function name and the
 correct template name. (Note that `login` is already a Django function
-that we'll need later, hence that controller being called
-`login_form`.)
+that we'll need later, so that function must be named `login_form`.)
 
 Open the `urls.py` file in the `cs3550` directory and add the
 following line to the top:
@@ -90,27 +88,29 @@ and see the results:
 
 Once everything works, commit everything to Github, including the new
 `grades` folder and the contents of the `migrations` folder inside it.
-If you have one **do not** commit your `db.sqlite3` file. (If you
-accidentally do, delete it and commit again. You can add it to your
-`.gitignore` file to avoid this happening in the future) You should
-see the Github Action turn green. If so, Phase 1 is done. If you do
-not, get help.
+If you have one **do not** commit your `db.sqlite3` file. (This should
+be the default, thanks to the `.gitignore` file in the repository. If
+you accidentally do commit your database file, delete it and commit
+again.) You should see the Github Action turn green. If so, Phase 1 is
+done. If you do not, get help.
 
 Phase 2: Writing a model
 ------------------------
 
 Open up `models.py`. Add the following line to the top:
 
-    from django.contrib.auth.models import User, Group
+    from django.contrib.auth.models import User
 
-This imports the authentication system's `User` and `Group` class,
-which we'll be using to represent students and TAs.
+This imports the authentication system's `User` class, which we'll be
+using to represent students and TAs, both of whom will be users of our
+website.
 
 Define two classes in this file called `Assignment` and `Submission`.
 Both should inherit from `models.Model` and contain `models.Field`
 classes.
 
 The `Assignment` class should have these fields:
+
 - A short string (less than 200 characters) for the assignment `title`
 - A long string for the assignment `description`
 - A `deadline`, which is a date and a time
@@ -120,6 +120,7 @@ The `Assignment` class should have these fields:
   assignment is graded out of)
   
 A `Submission` class should have these fields:
+
 - The `assignment` it is a submission for
 - The `author` who submitted the assignment
 - The `grader` who is grading the assignment
@@ -128,7 +129,7 @@ A `Submission` class should have these fields:
 
 As you define these fields, think carefully about:
 1. Which fields have to allow blanks
-2. Which fields should have defaults
+2. Which fields should have defaults and what those defaults should be
 3. For `ForeignKey` fields, what should happen if the related object
    is deleted
 
@@ -161,24 +162,21 @@ This deletes all existing data and reruns the script.
 The dummy data script creates a superuser account with a username and
 password of `pavpan`. You should be able to log in to the admin
 interface by running your server and then going to
-[http://localhost:8000/admin](http://localhost:8000/admin). I strongly
-recommend registering `Assignment` and `Submission` with the Django
-Admin, as discussed in class. You would be able to log in and add,
-edit, or delete any assignments or submissions you like.
+[http://localhost:8000/admin](http://localhost:8000/admin).
 
-Phase 3: Assignments view
+Register `Assignment` and `Submission` with the Django Admin, as
+discussed in class. Make sure you can log in to the admin interface as
+`pavpan` and then add, remove, or edit assignments and submissions.
+
+Phase 3: All assignments view
 -------------------------
 
-For the rest of the Phases of this assignment, you will be
-implementing the grades application. We won't yet be implementing
-authentication, so for now we will only implement the grader side of
-the application. We'll make the five views you have right now (index,
-assignments, submissions, profile, and login) generated from templates
-and have those templates get their data from the database.
-
-Create a folder named `templates` inside the `grades` application.
-Move all of the HTML files in `static` to this new `templates` folder.
-(You can also delete `test.html`, if you still have it.)
+Let's now implement the grades application. We won't yet be
+implementing authentication, so for now we will only implement the
+grader side of the application, specifically as if `ta1` is logged in.
+We'll make the five views you have right now (index, assignment,
+submissions, profile, and login) generated from templates and have
+those templates get their data from the database.
 
 Open `views.py` and add the following line to the top of the file:
 
@@ -187,40 +185,43 @@ Open `views.py` and add the following line to the top of the file:
 This allows your view functions (a.k.a. controllers) to use the models
 you defined.
 
-Modify the `assignments` view function to query the database for all
-assignments and pass them to the `assignments.html` template.
+Modify the `index` view function to query the database for all
+assignments and pass them to the `index.html` template.
 
-Now open up your `assignments.html` file. It should contain a table.
+Now open up your `index.html` file. It should contain a table.
 Delete all the content rows (not the header row) from the table; these
 rows should be generated from the list of all assignments passed in by
 the view. Specifically:
 
 - The "Assignment" column should be the assignment's `title`
-- Also the assignment cell should link to `/N`, where `N` is the
+- Also the assignment title should link to `/N/`, where `N` is the
   assignment ID
 - The "Due date" column should be the assignment's `deadline`,
-  formatted appropriately
+  formatted appropriately. (Match the screenshot.)
 - The "Weight" column should be the assignment's `weight`
 
 Run your server with:
 
-    python3 manage.py runserver --noreload
+    python3 manage.py runserver
 
 You should now be able to navigate to `http://localhost:8000/` and see
 the assignments page. If it looks like the screenshot, move on to the
-next phase. If it happens to contain no rows, that may be because you
-didn't run the dummy data script. Fix that by running:
+next phase.
+
+If it happens to contain no rows, make sure you've run the `makedata`
+script. If you haven't, run it:
 
     python3 manage.py migrate
     python3 makedata.py
 
-If you now see data, you can move on. If you still don't, get help.
+If you now see data, you can move on. If you still don't see data,
+it's probably some other bug---find and fix it before you move on.
 
 Phase 4: Assignment view
 ------------------------
 
-For the `index` view, you will need to look up the assignment based on
-the assignment ID and pass that to the template.
+For the `assignment` view, you will need to look up the assignment
+based on the assignment ID and pass that to the template.
 
 The assignment description is supposed to contain HTML. When adding it
 to the template, make sure to use the `safe` filter to allow raw HTML
@@ -232,9 +233,10 @@ For the action card, you will also need to look up:
 2. How many of submissions are assigned to "you"
 3. How many total students there are
 
-For item (2), you can assume "you" is the user with a name of `ta1`.
-For item (3), you can use the following code to find the total number
-of students:
+For item (1), do not loop over submissions one by one. Use the `count`
+query operator instead. For item (2), you can count submissions to the
+user named `ta1`. For item (3), you can use the following code to find
+the total number of students:
 
     models.Group.objects.get(name="Students").user_set.count()
 
@@ -255,7 +257,8 @@ Test that various assignments look normal. Only the "Homework 1"
 assignment has an extensive description. Test what happens if you the
 visit the URL for an invalid assignment, like
 http://localhost:8000/123456789/; this should show a 404 page instead
-of a crash page.
+of a crash page. (These pages look similar now, in "debug mode", but
+behave quite different once deployed.)
 
 Phase 5: Submissions and Profile view
 -------------------------------------
@@ -265,9 +268,8 @@ assignment. For each assignment, the "Graded" column should count how
 many submissions are assigned to `ta1` and how many of those are
 graded (which means a non-null `score` for that submission).
 
-When counting the number of submissions for a particular assignment,
-do not loop over submissions one by one; instead, use the `count`
-query operator.
+Do not count submissions, or graded submissions, by looping through
+them; use the `count` query operator.
 
 Write the `submissions` view. Like with the `assignment`
 view, you will need to look up the `Assignment` in question by its ID
@@ -277,15 +279,14 @@ is set to `ta1`. The template should generate the table so that:
 - The "Student" column has the submission's author's name
 - The "Submission" link should point to the submission's `file.url`
   field. This link won't work, however, until Homework 5.
-- The input field should have a name of `grade-X` where `X` is the
-  submission's ID and have a value which is the submission's `score`.
+- The input field should have value which is the submission's `score`.
   
 The rows should be sorted by `author`'s `username`. The "All grades
 out of" text at the top should show the assignment's `points` field
-and the "Back to assignment" link should go back to the `index` page
-for the same assignment.
+and the "Back to assignment" link should go back to the `assignment`
+page for the same assignment.
 
-In each template, navigation banner is the same. Create a new file
+In each template, the navigation banner is the same. Create a new file
 called `header.html` containing just this navigation banner. For the
 tab title use the `title` template parameter. In each template,
 replace the navigation banner with an `include` of `header.html`,
@@ -296,60 +297,12 @@ Test that if you add assignments, assign submissions to `ta1`, or
 grade submissions via the admin interface, that your application shows
 the updates correctly.
 
-Phase 6: Grading
-----------------
-
-Open up your `submissions` template. Check that all of the `input`
-elements and also the `<button>` element are inside a `form` element.
-Add an `action` attribute to the form whose value is the URL
-`/N/grade`, where `N` is the assignment ID. Also add a `method`
-attribute with value `post`.
-
-Add the line `{% csrf_token %}` somewhere inside the form.
-
-Define a new view function called `grade` and update `urls.py` to map
-that URL to this new view function.
-
-Inside this view function, the `request.POST` field contains the each
-input field. It is basically a hash table that maps the field's `name`
-to its `value`.
-
-Iterate through the input fields. In Python, when you iterate over a
-hash table, you get each **key** in the hash table. Skip any keys that
-don't start with `grade-`.
-
-For each input field, extract the submission ID from the key. You can
-use Python's `split` method to split a string into substrings and
-`int` to convert a string to an integer. Look up the `Submission` with
-that ID. Now compute the score for that submission. To do so, use
-`request.POST[key]` to get the value the TA typed into the score field
-and call the `float` function on it to convert it to a floating-point
-number. Set the submission's score to that. Catch the `ValueError`
-exception---that's thrown if the score isn't a valid floating-point
-number, and in that case you want to set the score to `None`.
-
-Remember to `save` any model object that you change. If you'd like,
-you can try using the `bulk_update` method to have fewer trips to the
-database.
-
-After updating grades use the `redirect` function to redirect back to
-the correct submissions page. You can import `redirect` from
-`django.shortcuts`.
-
-Make sure all of your views handle any errors. If you are passed an
-invalid assignment ID, or an invalid submission ID, raise an `Http404`
-exception, which you can import from `django.http`, or other 400-level
-response code.
-
 Write a cover sheet
 -------------------
 
 Run your server and view each page on your website in your browser.
 Read through the requirements of Phases 1--5 and ensure that all
 requirements are met. Visit invalid URLs and submit invalid grades.
-Moreover, make sure that your website HTML still passes all the
-requirements of [Assignment 1](../hw1/index.md) despite any changes
-you may have made.
 
 If you find any problems, use the browser developer tools to
 understand and correct the problem.
@@ -368,7 +321,6 @@ In this assignment, I completed:
 - [ ] Phase 3
 - [ ] Phase 4
 - [ ] Phase 5
-- [ ] Phase 6
 
 I discussed this assignment with:
 
@@ -435,10 +387,10 @@ different weights:
   
 If you pass all auto-tests, then you have completed this phase.
 
-**Phase 2** is worth 20 points. It is graded on:
+**Phase 2** is worth 30 points. It is graded on:
 
 - You must define all of the necessary classes and fields.
-- The corrent field type should be used for each field.
+- The correct field type should be used for each field.
 - All fields must have the correct lengths, nullness, and blank
   settings, and fields with defaults should have reasonable defaults.
 - Foreign key fields should have reasonable `on_delete` behaviors.
@@ -452,7 +404,7 @@ If you pass all auto-tests, then you have completed this phase.
 - The due date is printed correctly.
 - The assignment name links to the correct URL.
 
-**Phase 4** is worth 15 points. It is graded on:
+**Phase 4** is worth 20 points. It is graded on:
 
 - The assignment view is dynamically generated.
 - Assignment name, due date, and points are printed correctly.
@@ -461,7 +413,7 @@ If you pass all auto-tests, then you have completed this phase.
   tags on the page)
 - "Grade" link goes to the correct page.
 
-**Phase 5** is worth 20 points. It is graded on:
+**Phase 5** is worth 25 points. It is graded on:
 
 - The profile and submissions view is dynamically generated.
 - Profile view contains one row per assignment.
@@ -477,17 +429,6 @@ If you pass all auto-tests, then you have completed this phase.
   correctly generated.
 - Navigation banner is located only in `header.html` and never
   duplicated in templates.
-
-**Phase 6** is worth 20 points. It is graded on:
-
-- Form element on submissions page has correct `action` and `method`.
-- `grade` view defined and accessible from a URL
-- Submitting grades works
-- It is possible to submit an empty grade
-- Invalid grades (like the word "hello") are treated as if empty
-- After successful grade submission, user is redirected back to
-  submissions page
-- Invalid requests receive appropriate error codes.
 
 **Cover Sheet** is worth 5 points. It is graded on:
 
