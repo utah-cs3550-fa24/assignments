@@ -51,11 +51,17 @@ You should know the following CSS properties:
 You should be able to explain the cascading rule, inheritance, and
 shorthand properties.
 
+You should be able to identify where the padding, margin, and border
+areas of a box are. You should be able to define inline and block
+layout mode. You should be able to write a `max-width` or `min-width`
+media query.
+
 You should be able to use the following types of values:
 
 - For lengths, the `px`, `rem`, `vw`, and `vh` units
 - For colors, hex colors or named colors
 - For `line-height`, numeric multipliers
+- The CSS named fonts `serif`, `sans-serif`, `monospace`
 
 Flex-box
 --------
