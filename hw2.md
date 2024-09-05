@@ -139,7 +139,7 @@ even more space, but this isn't the case for the IBM Plex family.
 
 Add a CSS rule to set all text on the page to use IBM Plex Sans. Add a
 rule to make source code (like the text `assignments.html`, included
-in the page `index.html`) use IBM Plex Mono. Make sure to add a
+in the page `assignment.html`) use IBM Plex Mono. Make sure to add a
 "fall-back" to a system font using the CSS keyword fonts.
 
 Set the `line-height` to 1.25× for all text on the page. However,
@@ -157,8 +157,8 @@ links in the navigation banner to be dark gray. Make the text "CS
 In the page title (the part that changes for different pages), set the
 title to be 50% larger than the default font size.
 
-Set the "Description" header in `index.html` to be the default font
-size.
+Set the "Description" header in `assignment.html` to be the default
+font size.
 
 Set all text inside the login form to be 25% larger than the default
 font size. This includes the "Username:" and "Password:" labels; the
@@ -230,7 +230,7 @@ all the way to the edge of the page.
 
 Make sure there is `1rem` of whitespace between most other elements on
 in the main content, including: after the page title/subtitle; around
-action cards; in `index.html`, before and after the "Description"
+action cards; in `assignment.html`, before and after the "Description"
 heading; between paragraphs and list items; and before and after
 tables and figures.
 
