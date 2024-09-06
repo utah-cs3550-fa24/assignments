@@ -198,7 +198,7 @@ In `submissions.html`, leave the text entries in the "grade" column
 and the "Submit" button at their default widths.
 
 Make sure the "Submit" and "Back to assignment" links are horizontally
-adjance to each other. There should be a gap of `1rem` between them.
+adjance to each other.
 
 Phase 4: Borders, backgrounds, and whitespace
 ---------------------------------------------
