@@ -1,8 +1,8 @@
 CS 3550 Syllabus, Fall 2024
 ===========================
 
-**Instructor**: Pavel Panchekha, [pavpan@cs.utah.edu](mailto:pavpan@cs.utah.edu) \
-**Assistants**: Seng, Brensen, Seth \
+**Instructor**: Pavel Panchekha, [pavpan@cs.utah.edu](mailto:pavpan@cs.utah.edu), office MEB 2174 \
+**Assistants**: Seng, Brensen, Seth, office hours in CADE Lab (WEB L226) \
 **Lecture**: Mon/Wed 4:35–5:55 in WEB L101 \
 **Midterm**: Wed 2 October during class in WEB L101 \
 **Final**: Mon 9 December at 6:00pm in WEB L101 \
