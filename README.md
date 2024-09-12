@@ -24,13 +24,12 @@ As well as homework assignments:
   Due 23 Aug and 30 Aug.
 * [Homework 2 (CSS)](hw2.md) \
   Due 6 Sep and 13 Sep.
-* Homework 3 (Templates) \
-  Currently a draft \
+* [Homework 3 (Models and Views)](hw3.md) \
   Due 20 Sep and 27 Sep.
-* Homework 4 (Forms) \
+* Homework 4 (Controllers) \
   Not yet written
   Due 18 Oct and 25 Oct.
-* Homework 5 (Permissions) \
+* Homework 5 (Users and Permissions) \
   Currently copied from last year. \
   Due 1 Nov and 8 Nov.
 * Homework 6 (JavaScript) \

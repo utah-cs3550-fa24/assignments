@@ -1,16 +1,16 @@
-CS 3550 Assignment 3 (Django)
-==========================
+CS 3550 Assignment 3 (Models and Views)
+=======================================
 
-**Status**: Draft \
+**Status**: Final \
 **Due**: Phase 1 due **20 Sep**, Phase 2--5 due **27 Sep**
 
 About
 -----
 
 In this assignment you'll write a backend for the frontend you
-developed in [Assignmets 1](hw1.md) [and 2](hw2.md). The grading
-application will then generate all pages using a database, and you'll
-be able to edit the data via Django's admin interface. You will:
+developed in [Assignments 1](hw1.md) [and 2](hw2.md). The grading
+application will then generate all pages using a database, which we'll
+initialize with some data. You will:
 
 - Create models in Django to describe your application's data
 - Query those models to extract view-relevant data
@@ -70,12 +70,15 @@ following line to the top:
 Now add these entries to the `urlpatterns` list:
 
 ```python
-path("", views.assignments),
-path("<int:assignment_id>/", views.index),
+path("", views.index),
+path("<int:assignment_id>/", views.assignment),
 path("<int:assignment_id>/submissions", views.submissions),
 path("profile/", views.profile),
 path("profile/login", views.login_form),
 ```
+
+If you get an `AttributeError`, make sure you defined all five methods
+in `views.py` and you gave each of them the correct name.
 
 You should now be able to run your server, visit the following URLs,
 and see the results:
@@ -85,6 +88,10 @@ and see the results:
 - http://localhost:8000/1/submissions
 - http://localhost:8000/profile
 - http://localhost:8000/profile/login
+
+If you see a `TypeError` check that your `assignment` and
+`submissions` functions take two arguments: `request` and
+`assignment_id`.
 
 Once everything works, commit everything to Github, including the new
 `grades` folder and the contents of the `migrations` folder inside it.
@@ -99,11 +106,12 @@ Phase 2: Writing a model
 
 Open up `models.py`. Add the following line to the top:
 
-    from django.contrib.auth.models import User
+    from django.contrib.auth.models import User, Group
 
 This imports the authentication system's `User` class, which we'll be
 using to represent students and TAs, both of whom will be users of our
-website.
+website. (It also imports a `Group` class, which we won't use in our
+models.)
 
 Define two classes in this file called `Assignment` and `Submission`.
 Both should inherit from `models.Model` and contain `models.Field`
@@ -127,15 +135,23 @@ A `Submission` class should have these fields:
 - A `file` containing the submission itself
 - A `score`, which is a floating-point number
 
+Note that Django will automatically also add a unique,
+auto-incrementing `id` field to each model.
+
 As you define these fields, think carefully about:
-1. Which fields have to allow blanks
+
+1. Which fields have to allow blanks or nulls
 2. Which fields should have defaults and what those defaults should be
 3. For `ForeignKey` fields, what should happen if the related object
    is deleted
 
 When defining the `grader` field, you will need to pass the
-`related_name='graded_set'` argument to `ForeignKey`. Note that Django
-will automatically also add an `id` field to each model.
+`related_name='graded_set'` argument to `ForeignKey`. (This is because
+when class `X` has a `ForeignKey(Y)` field, then the `Y` class also
+gains a field calls `x_set`. Normally this is fine, but since a
+`Submission` has two users associated with it, Django needs to defined
+two different sets of submissions for each `User` and we need to
+supply the name of the second one.)
 
 When you're finished, run:
 
@@ -160,9 +176,11 @@ remember to run:
 This deletes all existing data and reruns the script.
 
 The dummy data script creates a superuser account with a username and
-password of `pavpan`. You should be able to log in to the admin
-interface by running your server and then going to
-[http://localhost:8000/admin](http://localhost:8000/admin).
+password of `pavpan`. It also creates two TAs (`g` and `h`) and four
+students (`a`, `b`, `c`, `d`), eight assignments, and a number of
+submissions. Each user's password is their username. Single-letter
+usernames and passwords aren't realistic, of course, but later on this
+will make it easy for you to log in and out as different users.
 
 Register `Assignment` and `Submission` with the Django Admin, as
 discussed in class. Make sure you can log in to the admin interface as
@@ -173,20 +191,22 @@ Phase 3: All assignments view
 
 Let's now implement the grades application. We won't yet be
 implementing authentication, so for now we will only implement the
-grader side of the application, specifically as if `ta1` is logged in.
-We'll make the five views you have right now (index, assignment,
-submissions, profile, and login) generated from templates and have
-those templates get their data from the database.
+grader side of the application, specifically as if Garry Grader
+(username `g`) is logged in. We'll make the five views you have right
+now (index, assignments, submissions, profile, and login) generated
+from templates and have those templates get their data from the
+database.
 
-Open `views.py` and add the following line to the top of the file:
+Open `views.py` and add the following line to the top of the file (if
+it's not there already):
 
     from . import models
 
 This allows your view functions (a.k.a. controllers) to use the models
 you defined.
 
-Modify the `index` view function to query the database for all
-assignments and pass them to the `index.html` template.
+Modify the `index` view function to retrieve all assignments and pass
+them to the `index.html` template.
 
 Now open up your `index.html` file. It should contain a table.
 Delete all the content rows (not the header row) from the table; these
@@ -233,10 +253,11 @@ For the action card, you will also need to look up:
 2. How many of submissions are assigned to "you"
 3. How many total students there are
 
-For item (1), do not loop over submissions one by one. Use the `count`
-query operator instead. For item (2), you can count submissions to the
-user named `ta1`. For item (3), you can use the following code to find
-the total number of students:
+For items (1) and (2) use the `submission_set` and `graded_set`
+fields, which are the "reverse" of `ForeignKey`s that you added in
+your model. Do not loop over submissions one by one; use the `count`
+query operator instead. For item (3), you can use the following code
+to find the total number of students:
 
     models.Group.objects.get(name="Students").user_set.count()
 
@@ -247,44 +268,45 @@ pluralized. That is, it should say either "1 submission assigned to
 you" or "2 submissions assigned to you". Also make sure all other
 plurals are correctly pluralized; for example, an example worth one
 point total should not say "1 points" in the subtitle, and if only 1
-submission exists the action card should not say that "1/1
-submissions".
+student exists the action card should not say that "1/1 submissions"
+(pluralize based on the second number).
 
 Make sure the `grade` link in the action card points to
 `/N/submissions`, where `N` is the assignment ID.
 
-Test that various assignments look normal. Only the "Homework 1"
-assignment has an extensive description. Test what happens if you the
-visit the URL for an invalid assignment, like
+Test that various assignments look normal. Test what happens if you
+the visit the URL for an invalid assignment, like
 http://localhost:8000/123456789/; this should show a 404 page instead
-of a crash page. (These pages look similar now, in "debug mode", but
-behave quite different once deployed.)
+of a crash page. (Crash and 404 pages look similar in "debug mode",
+but behave quite different once deployed.)
 
 Phase 5: Submissions and Profile view
 -------------------------------------
 
 Write the `profile` view. The table should contain one row per
 assignment. For each assignment, the "Graded" column should count how
-many submissions are assigned to `ta1` and how many of those are
-graded (which means a non-null `score` for that submission).
+many submissions are assigned to `g` and how many of those are graded
+(which means a non-null `score` for that submission).
 
 Do not count submissions, or graded submissions, by looping through
 them; use the `count` query operator.
 
-Write the `submissions` view. Like with the `assignment`
-view, you will need to look up the `Assignment` in question by its ID
-and then request all `Submission`s to that assignment whose `grader`
-is set to `ta1`. The template should generate the table so that:
+Write the `submissions` view. Like with the `assignment` view, you
+will need to look up the `Assignment` in question by its ID and then
+request all `Submission`s to that assignment whose `grader` is set to
+`g`. The template should generate the table so that:
 
-- The "Student" column has the submission's author's name
+- The "Student" column has the submission's author's full name; use
+  the `get_full_name()` method on `User`.
 - The "Submission" link should point to the submission's `file.url`
   field. This link won't work, however, until Homework 5.
-- The input field should have value which is the submission's `score`.
+- The input field's `value` attribute should be the submission's
+  `score`, if any.
   
 The rows should be sorted by `author`'s `username`. The "All grades
 out of" text at the top should show the assignment's `points` field
-and the "Back to assignment" link should go back to the `assignment`
-page for the same assignment.
+and the "Back to assignment" link should go back to the page for the
+same assignment.
 
 In each template, the navigation banner is the same. Create a new file
 called `header.html` containing just this navigation banner. For the
@@ -292,10 +314,6 @@ tab title use the `title` template parameter. In each template,
 replace the navigation banner with an `include` of `header.html`,
 passing in the correct tab title. This should make your templates much
 shorter.
-
-Test that if you add assignments, assign submissions to `ta1`, or
-grade submissions via the admin interface, that your application shows
-the updates correctly.
 
 Write a cover sheet
 -------------------
@@ -419,7 +437,7 @@ If you pass all auto-tests, then you have completed this phase.
 - Profile view contains one row per assignment.
 - Profile view contains correct counts of assigned and graded
   submissions.
-- Counts only refer to submissions assigned to `ta1`.
+- Counts only refer to submissions assigned to `g`.
 - Profile view uses queries, not loops, to count submissions.
 - Submissions view contains one row per submission.
 - All columns in the submission view are correctly generated.
