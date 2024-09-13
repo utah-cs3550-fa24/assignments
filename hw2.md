@@ -65,8 +65,7 @@ rules. You don't need to memorize them: refer back here as you do the
 assignment.
 
 - All lengths should use `rem` units, except borders and shadows,
-  which should use `px`, and a few places where `%` are allowed,
-  indicated below.
+  which should use `px`, and a few widths where you should use `%`
 - Always use unitless multipliers for `line-height`
 - Do not use any `display` mode except the default one and `flex`
 - Do not use tables for layout. (You should still use them for tabular data.)
