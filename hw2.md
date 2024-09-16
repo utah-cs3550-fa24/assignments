@@ -391,7 +391,7 @@ If you pass all auto-tests, then you have completed this phase.
 - Font sizes, weights, and colors must be set appropriately for each
   element
 
-**Phase 4** is worth 20 points. It is graded on:
+**Phase 3** is worth 20 points. It is graded on:
 
 - Hovering and clicking links in the navigation banner should change
   underlining and color as required
@@ -401,7 +401,7 @@ If you pass all auto-tests, then you have completed this phase.
 - On the submissions page the form elements and links must have the
   required widths, layout, and gaps.
 
-**Phase 3** is worth 25 points. It is graded on:
+**Phase 4** is worth 25 points. It is graded on:
 
 - The navigation banner must have the required background and shadow
 - Action cards must have the appropriate background, border, and

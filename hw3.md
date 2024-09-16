@@ -41,7 +41,7 @@ lines that define `INSTALLED_APPS` and add the string `'grades'` to
 the list. This means that the `grades` app you just created is now
 part of the project.
 
-Inside the `grades` directory find a subdirectory called `templates`.
+Inside the `grades` directory create a subdirectory called `templates`.
 Move all of the HTML files in `static` to this new `templates` folder.
 (You can also delete `test.html`, if you still have it.)
 
