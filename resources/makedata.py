@@ -15,10 +15,10 @@ def midnight(month, day):
     return datetime.datetime(2024, month, day, 11, 59, 59, 999999, tz)
 
 def check_has_data():
-    return Group.objects.all.count() or \
-        User.objects.all.count() or \
-        Assignment.objects.all.count() or \
-        Submission.objects.all.count()
+    return Group.objects.all().count() or \
+        User.objects.all().count() or \
+        Assignment.objects.all().count() or \
+        Submission.objects.all().count()
 
 def initial_data():
     tas, _ = Group.objects.get_or_create(name='Teaching Assistants')
