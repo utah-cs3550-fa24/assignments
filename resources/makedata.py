@@ -153,7 +153,7 @@ pages for the grading application:</p>
 <p>Your controllers should handle the following key functionalities:</p>
 
 <ol>
-    <li><code>submit_file</strong>:
+    <li><code>submit_file</code>:
         <ul>
             <li>Handle file uploads for assignments</li>
             <li>Validate submission deadlines</li>
@@ -266,7 +266,7 @@ pages for the grading application:</p>
         points=100
     )
     hw6 = Assignment.objects.create(
-        title="Homework 6 (AWS)",
+        title="Homework 7 (AWS)",
         description="""
 <p>In this final assignment, you will deploy your grading application to the cloud using Amazon Web Services (AWS) EC2:</p>
 
@@ -315,7 +315,7 @@ pages for the grading application:</p>
     </li>
 </ol>
 
-<p><strong>Requirements:</strong></p>
+<h2>Requirements:</2>
 <ul>
     <li>Document each step of your deployment process</li>
     <li>Implement proper security measures (HTTPS)</li>
