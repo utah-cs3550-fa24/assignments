@@ -1,49 +1,62 @@
-Various Notes
-=============
+Checklists
+==========
 
-This document lists helpful checklists and notes. You won't ever be
-quizzed on it, but it might be helpful to know and practice it because
-it gives you a systematic way to get various things done.
+This document has helpful checklists that help you develop various
+parts of a web application. You won't ever be tested directly on the
+checklist, but you will be tested on doing the task the checklist
+helps with, and it's probably helpful to know and practice using each
+checklist here.
 
 Flex-box
 --------
 
-I recommend doing all flex-box layouts in the following order. Before
-beginning, I find it helpful to draw a diagram where I can draw in
-containers and mark their sizes and where the whitespace should go.
+Start by drawing (or finding) a picture of what you want the final
+layout to look like. As you go, you'll need to draw in additional
+annotations on this picture.
 
-**Step 1: Rows and columns.** Figure out which elements are flex
-containers, and whether they are rows or columns. In the process, you
-might need to add new elements (usually `<div>`, but in rare cases
-there might be some semantically-appropriate other element) to be new
-flex containers. Assign `display: flex` and the appropriate
-`flex-direction` to each container.
+Start at the outermost element. For a full-page layout, this is the
+page as a whole (usually the `<body>` element); for a component it'll
+be the element that contains the whole component. You'll work from the
+outside in.
 
-Now, go through the containers *starting from the root container*. For
-each one, do the following steps.
+**Step 0: Diagramming.** Draw the boundaries of the current element.
+Then, draw a rectangle around each item it contains. You should end up
+with a width/height for each item and also some whitespace between
+items.
+
+**Step 1: Rows and columns.** Are the items arrange horizontally or
+vertically? Use that to decide if the current element is a row or a
+column. Assign `display: flex` and the appropriate `flex-direction`.
+
+How many items are there? If the number of HTML child elements is
+different, you'll need to add new wrapper elements (usually `<div>`s).
 
 **Step 2: main direction lengths.** Next, figure out how long, in the
-main direction each item should be. This means width for items in row
-containers and height for items column containers.
+main direction, each item is. The "main direction" is horizontally for
+rows and vertically for columns. A lot of elements will be "sized to
+content", which is the default, but some might have fixed widths.
+Assign the appropriate `width`/`height` property.
 
-First, assign the appropriate `width`/`height` property to handle the
-"default" or "preferred" size. (The formal name is "basis".) Then ask
-yourself whether its size is flexible and should change with the size
-of the container. If yes, also assign an appropriate `flex-grow` and
-`flex-shrink` value.
+Then ask yourself whether each child can grow or shrink from this
+size. Assign the appropriate `flex-grow` and `flex-shrink` value.
 
 **Step 3: main direction whitespace.** Now figure out how big the
 whitespace between items in the main direction should be.
 
-First, assign the appropriate `gap` between items. This is the
-"default" or "preferred" gap. Then ask yourself whether the gaps
-should be flexible and change size with the container. If yes, also
-assign an appropriate `justify-content` value.
+First, assign the appropriate `gap` between items and `padding`
+between those items and the container. This is the "default" or
+"minimum" gap. Then ask yourself whether any gaps should be flexible
+and change size with the container. If yes, also assign an appropriate
+`justify-content` value.
+
+In some cases you will want whitespace distributed in some unusual way
+(such as, one third over here and two third over there). If this
+happens, you need to return to step 0 and diagram the element
+differently, usually grouping elements with wrappers.
 
 **Step 4: other direction.** Now figure out how big each item should
 be in the other direction (so, height inside row containers and width
-inside column containers).
-
-If it should stretch across the whole container, do nothing.
-Otherwise, first set `align-items` to determine where the whitespace
-goes and then `height`/`width` to set the size if not fit to content.
+inside column containers). The default is to stretch across the whole
+container, but if it should be different, first set `align-items` to
+determine where the whitespace goes and then `height`/`width` to
+indicate centering / start / end.

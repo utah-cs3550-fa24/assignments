@@ -8,7 +8,7 @@ document to study outside of class.
 HTML
 ----
 
-You should be able to use HTML to:
+**Basic HTML**: You should be able to use HTML to:
 
 - Write valid HTML using the doctype, `<meta>`, `<link>`, `<title>`
 - Style text using `<a>`, `<em>`, `<strong>`, `<code>`, `<img>`
@@ -23,21 +23,21 @@ You should be able to look at a screenshot of a website or application
 and write valid, semantically-meaningful HTML for it using standard
 tags.
 
-You should know key accessibility requirements, such as proper heading
-hierarchies, textual alternatives for images, and language attributes.
-You should be able to identify when HTML code is missing these
-accessiblity requirements. You should know the `lang`, `alt`, and
-`title` attributes, and the `<label>` element. For `<input>` elements,
-you should know the `checkbox`, `radio`, `file`, `image`, `date`,
-`time`, `text`, `number`, `email`, and `tel` types.
+**Accessibility**: You should know key accessibility requirements,
+such as proper heading hierarchies, textual alternatives for images,
+and language attributes. You should be able to identify when HTML code
+is missing these accessiblity requirements. You should know the
+`lang`, `alt`, and `title` attributes, and the `<label>` element. For
+`<input>` elements, you should know the `checkbox`, `radio`, `file`,
+`image`, `date`, `time`, `text`, `number`, `email`, and `tel` types.
 
 CSS
 ---
 
-You should be able to write CSS code that uses tag, ID, and class
-selectors, plus the `:hover` pseudo-class, and compound selectors
-using the space combination type. You should be able to write
-selectors to select various elements on an HTML page.
+**Basic CSS**: You should be able to write CSS code that uses tag, ID,
+and class selectors, plus the `:hover` pseudo-class, and compound
+selectors using the space combination type. You should be able to
+write selectors to select various elements on an HTML page.
 
 You should know the following CSS properties:
 
@@ -51,10 +51,10 @@ You should know the following CSS properties:
 You should be able to explain the cascading rule, inheritance, and
 shorthand properties.
 
-You should be able to identify where the padding, margin, and border
-areas of a box are. You should be able to define inline and block
-layout mode. You should be able to write a `max-width` or `min-width`
-media query.
+**Legacy layout**: You should be able to identify where the padding,
+margin, and border areas of a box are. You should be able to define
+inline and block layout mode. You should be able to write a
+`max-width` or `min-width` media query.
 
 You should be able to use the following types of values:
 
@@ -63,47 +63,33 @@ You should be able to use the following types of values:
 - For `line-height`, numeric multipliers
 - The CSS named fonts `serif`, `sans-serif`, `monospace`
 
-Flex-box
---------
+**Flex-box**: You should be able to create complex layouts using
+flex-box layout, including nested layouts with rows and columns. This
+involves knowing how to use the the `display: flex` and
+`flex-direction` properties, the `width`/`height`, `flex-grow`, and
+`flex-shrink` properties, and the `justify-content`, `gap`, and
+`align-items` properties.
 
-You should be able to create flex containers and identify their flex
-items to create complex layouts, including nested layouts with rows
-and columns, using the `display: flex` and `flex-direction`
-properties.
+Knowing the properties and their values is not enough! You should be
+able to design complex layouts using flex-box, starting from
+screenshots or wireframes. The [Notes](notes.md#flex-box) have a short
+checklist you can follow to build complex flex-box layouts. You should
+feel comfortable using this checklist to create layouts from
+screenshots or wireframes. It is important to practice this.
 
-You should be able to assign widths and heights to flex items using
-`width` and `height`. You should be able to use `flex-grow` and
-`flex-shrink` to flexibly resize flex items. You should be able to
-control white-space using `justify-content`, `gap`, and `align-items`.
-
-The [Notes](notes.md#flex-box) have a short checklist you can follow
-to build complex flex-box layouts. You should feel comfortable using
-this checklist to create layouts from screenshots or wireframes.
-
-You should be able to name the components of the CSS box model (width,
-padding, border, margin) correctly. You should know the order of top,
-right, bottom, and left in properties like `margin`.
-
-Back-ends
----------
+Django and MVC
+--------------
 
 You should be able to define clients, servers, the client-server
-architecture, message-passing, requests, and responses.
+architecture, requests, and responses.
 
-You should be able to identify the parts of a URL: the protocol (or
-scheme), hostname (or domain), port, and path (or page).
-
-You should be able to explain what components of a web server are
-provided by Django. You should be able to explain the roles of the
-model, view, and controller in a MVC-style web application. You should
-be able to explain the roles of standard Django project files like
+You should be able to explain the roles of the model, view, and
+controller, and router in a MVC-style web application. You should be
+able to explain the roles of standard Django project files like
 `settings.py`, `urls.py`, `models.py`, `views.py`, the `migrations/`
 folder, the `static/` folder, and the `templates/` folder.
 
-Models
-------
-
-You should know the following Django field types:
+**Models**: You should know the following Django field types:
 
 - `IntegerField`, `FloatField`, and `DecimalField`
 - `CharField` and `TextField`
@@ -118,7 +104,25 @@ You should be able to model complex relationships in web application
 state using `ForeignKey` relationships, including choosing `on_delete`
 behavior.
 
-You should be able to create, save, and query Django model objects.
+**Views**: You should know how to use the `render` function in
+controllers.
+
+You should know the following Django template filters:
+
+- `default`
+- `floatformat`, `date`, `timesince`
+- `join`, `length`, `pluralize`
+
+You should know the `for`, `if`, `with`, and `include` Django template
+tags and the `forloop.first`, `forloop.last`, `forloop.counter`, and
+`forloop.counter0` variables.
+
+**Controllers**:
+
+You should know the syntax for defining URLs, including parameterized
+URLs, in `urls.py`.
+
+You should be able to query, create, and save Django model objects.
 Specifically, you should know the following query operators:
 
 - `filter`, `exclude`, `union`, `intersection`, and `distinct`
@@ -126,6 +130,11 @@ Specifically, you should know the following query operators:
 - `count` and `aggregate`
 - `first` and `last`
 - `contains` and `exists`
+
+You should be able to use to query objects by field (as in
+`author="Tom Clancy"`; by field of a related object (as in
+`author_name="Tom Clancy"`); or by property of a field (as in
+`author_name__contains="Tom"`).
 
 You should be able to explain the "1 + N" problem and be able to use
 `select_related` to fix it.
@@ -138,18 +147,10 @@ they are run, and what problem they solved.
 Topics below this line are not on the midterm, even if they were
 covered in class before the midterm was assessed.
 
-Views
------
+----------------------------------------------------
 
-You should know the `for`, `if`, `with`, and `include` Django template
-blocks. You should know the following Django template filters:
-
-- `default`
-- `floatformat`, `date`, `timesince`
-- `join`, `length`, `pluralize`
-
-You should know the syntax for defining URLs, including parameterized
-URLs. You should know how to use the `render` function.
+Complex Controllers
+===================
 
 You should know how to catch errors raised by queries and how to
 return 404 or other error pages.
@@ -261,6 +262,9 @@ to move `await` calls later in the code to enable more parallelism.
 
 Deploy
 ------
+
+You should be able to identify the parts of a URL: the protocol (or
+scheme), hostname (or domain), port, and path (or page).
 
 You should know rough orders of magnitude for how many websites there
 are and how many internet users there are. You should know how old the
