@@ -14,7 +14,7 @@ HTML
 - Style text using `<a>`, `<em>`, `<strong>`, `<code>`, `<img>`
 - Structuring text using `<p>`, `<h1>` through `<h6>`, `<pre>`
 - Structure pages using `<nav>`, `<header>`, `<footer>`, `<main>`
-- Separate sections with `<article>`, `<section>`, `<aside>`
+- Separate sections with `<section>`, `<aside>`
 - Write lists using `<ul>`, `<ol>`, `<menu>`, `<li>`
 - Write tables using `<table>`, `<thead>`, `<tfoot>`, `<tr>`, `<td>`, and `<th>`
 - Use `&lt;`, `&gt;`, `&amp;` escapes and `<!-- -->` comments
@@ -117,10 +117,8 @@ You should know the `for`, `if`, `with`, and `include` Django template
 tags and the `forloop.first`, `forloop.last`, `forloop.counter`, and
 `forloop.counter0` variables.
 
-**Controllers**:
-
-You should know the syntax for defining URLs, including parameterized
-URLs, in `urls.py`.
+**Controllers**: You should know the syntax for defining URLs,
+including parameterized URLs, in `urls.py`.
 
 You should be able to query, create, and save Django model objects.
 Specifically, you should know the following query operators:
@@ -140,7 +138,7 @@ You should be able to explain the "1 + N" problem and be able to use
 `select_related` to fix it.
 
 You should be able to explain migrations, when they are created, when
-they are run, and what problem they solved.
+they are run, and what problem they solve.
 
 ----------------------------------------------------
 

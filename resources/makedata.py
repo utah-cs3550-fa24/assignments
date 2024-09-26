@@ -76,7 +76,7 @@ pages for the grading application:</p>
         
 <p>For example, here is a page <b>you will make</b>, in a file called <code>assignments.html</code>:</p>
 
-<img class='screenshot' src='/static/assignments.png' alt='A screenshot of the assignments page' />
+<img class='screenshot' src='/static/assignment.png' alt='A screenshot of the assignments page' />
 """,
         deadline=midnight(8, 30),
         weight=100,
