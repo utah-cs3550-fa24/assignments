@@ -147,34 +147,30 @@ covered in class before the midterm was assessed.
 
 ----------------------------------------------------
 
-Complex Controllers
-===================
+Forms
+=====
 
-You should know how to catch errors raised by queries and how to
-return 404 or other error pages.
-
-You should know how to make a valid HTML form, including the `<form>`,
-`<label>`, `<input>`, `<button>`, and `<output`> elements. You should
-know what the `action`, `method`, and `enctype` parameters do on
-forms, and be able explain the difference between the `get` and `post`
-values for `method` and choose the right one for various forms. (You
-are not expected to know what values to put for `enctype`, but you are
-expected to know in what case you need to set a non-default
-`enctype`.)
-
-You should know the `type`, `id`, `name`, `value`, and `disabled`
-attributes on input elements. You should know the following `type`s of
-input elements:
-
-- `text`, `number`, `password`, `hidden`
-- `checkbox`, `radio`, `file`
-- `date`, `time`, `email`, `tel`
+**Forms** You should know how to make a valid HTML form, including the
+`<form>`, `<label>`, `<input>`, `<button>`, and `<output`> elements.
+You should know what the `action`, `method`, and `enctype` parameters
+do on forms, and be able explain the difference between the `get` and
+`post` values for `method` and choose the right one for various forms.
+(You are not expected to know what values to put for `enctype`, but
+you are expected to know in what case you need to set a non-default
+`enctype`.) You should know the `type`, `id`, `name`, `value`, and
+`disabled` attributes on input elements.
 
 You should be able to write a Django view function (controller) that
 receives form data and saves it to the database. You should know how
 to use the `request.GET`, `request.POST`, and `request.FILES`
 dictionaries to access form data. You should be able to describe the
 risks associated with file uploads.
+
+**Validation**: You should know how to catch errors raised by queries
+and how to return 404 or other error pages. You should be able to
+handle errors when validating form data in a Django view function and
+be able to either re-display the form with an error message or
+redirect the user when the form is submitted successfully.
 
 You should be able to use the following input element attributes for
 client-side validation:
@@ -188,29 +184,18 @@ client-side validation:
 You should also be able to use `:valid` / `:invalid` to style HTML
 forms.
 
-You should be able to handle errors when validating form data in a
-Django view function and be able to either re-display the form with an
-error message or redirect the user when the form submits successfully.
-
 Security
 ========
 
-You should be able to describe a realistic threat model for a small
-web application, including attackers, goals, and capabilities. You
-should be able to suggest security policies for simple web
-applications like the ones in your assignments.
+You should be able to define authorization and authentication. You
+should be able to explain cookies, identity, and session data. You
+should be able to describe simple security policies in terms of
+objects, actions, users, and groups.
 
-You should be able to define both authorization and authentication.
-You should be able to explain how cookies are used to create client
-identity and how session data is stored by the server. You should be
-able to describe simple security policies in terms of objects,
-actions, users, and groups.
-
-You should be able to use `request.session` and `request.user` in
-Django controllers. You should be able to use the `authenticate`,
-`login`, and `logout` functions for logging users in and out. You
-should be able to test if a Django `User` is a member of a `Group` and
-raise `PermissionDenied` if an authorization check fails.
+You should be able to use `request.user`, `authenticate`, `login`, and
+`logout` for logging users in and out. You should be able to test if a
+Django `User` is a member of a `Group` and raise `PermissionDenied` if
+an authorization check fails.
 
 You should be able to explain what an injection vulnerability is, and
 what the benefits and risks are of using `|safe` or `.raw()` in
@@ -218,7 +203,7 @@ Django. You should be able to explain what CSRF is, what `{%
 csrf_token %}` outputs, and what the risks are of using
 `@csrf_exempt`. You should be able to explain what an open redirect
 is, and what to look for in your code to find it. You should be able
-to explain what CVEs are and what the OWASP top 10 are.
+to explain what a CVE is and who/what OWASP is.
 
 JavaScript
 ==========
