@@ -42,7 +42,7 @@ requests, it:
 3. If authentication succeeds,
    calls [Django's `login` function][docs-login]
    and then redirects to the `/profile/` page.
-4. If authentication fails, re-render the form,
+4. If authentication fails, re-renders the form,
    same as if it were a `GET` request.
 
 You are expected to follow the links above to learn how to call
@@ -53,11 +53,12 @@ handle this using Python's `get` method on hash tables:
     username = request.POST.get("username", "")
 
 This returns the `username` value in `request.POST` if there is one,
-or the empty string if there isn't.
+or the empty string if there isn't. There's no user with an empty
+username, so in this case `authenticate` will fail.
 
 In your `profile` view, pass `request.user` to the template. In the
 `profile.html` template, in the action card, display the user's
-`username` field. This step is important because it allows you to test
+`get_full_name`. This step is important because it allows you to test
 whether or not you actually logged in.
 
 Test that you can log in and see the username you've logged in as on
@@ -78,8 +79,8 @@ so that the "Log out" link takes the user to `/profile/logout`.
 Test that logging out works correctly. When you are logged out, you
 should either see no username or "AnonymousUser" on the profile page.
 
-If you can log in, see your username on the profile page, and log out,
-you should be done with this phase. You can confirm by using the
+If you can log in, see your user's name on the profile page, and log
+out, you should be done with this phase. You can confirm by using the
 auto-tester. If the auto-tester passes, you are done with this phase.
 
 [docs-auth]: https://docs.djangoproject.com/en/4.2/topics/auth/default/#django.contrib.auth.authenticate
@@ -145,17 +146,17 @@ Now that users can log in, this Phase consists in modify each view to
 customize it to the currently-logged-in user. To do so, you will need
 to use a few Django features.
 
-First of all, the currently-logged-in user is available in
-`request.user`. Note that if the user is _not_ logged in, this will be
-an `AnonymousUser`. You can tell whether a user is the `AnonymousUser`
-by looking at the `User`'s `is_authenticated` field, which is `True`
-for real users and `False` for the `AnonymousUser`.
+Recall that the currently-logged-in user is `request.user`. Note that
+if the user is _not_ logged in, this will be an `AnonymousUser`. You
+can tell whether a user is the `AnonymousUser` by looking at the
+`User`'s `is_authenticated` field, which is `True` for real users and
+`False` for the `AnonymousUser`.
 
-Secondly, you will need to determine what kind of user someone is. You
-can do so by examining the `groups` field on a `User`. This is a
-`ForeignKey` style field, so, for example, if you want to know if a
-user is a student, you can check if the user's `groups` contain any
-objects with a `name` of `"Students"`, like this:
+You will need to determine what kind of user someone is. You can do so
+by examining the `groups` field on a `User`. This is a `ForeignKey`
+style field, so, for example, if you want to know if a user is a
+student, you can check if the user's `groups` contain any objects with
+a `name` of `"Students"`, like this:
 
 ```
 def is_student(user):
@@ -176,31 +177,117 @@ Now let's customize each view.
 The `assignments` view (you might call it `index`) does not need any
 customization.
 
-The `assignment` view should change its "action card" based on the
-logged in user. Students and the `AnonymousUser` should see the action
-card that allows uploading files to make a new submission. TAs and the
-administrative user should see the action card that shows total submissions.
-In either case, the card and form handling should be specialized to
-the current user, not Alice Algorithm or Garry Grader. One tweak is
-that for the administrative user, instead of showing total submissions
-assigned to the current grader, it should show total submissions.
+The `assignment` view should change which "action card" is shown based
+on the logged in user. Students and the `AnonymousUser` should see the
+action card that allows uploading files. TAs and the administrative
+user should see the action card that shows total submissions. In
+either case, the card and form handling should be specialized to the
+current user, not Alice Algorithm or Garry Grader. One additional
+complication is that for the administrative user, instead of showing
+total submissions assigned to the current grader, it should show total
+submissions.
 
 The `submissions` view should show all submissions assigned to the
 current user when viewed by a TA, or just all submissions when viewed
 by the administrative user.
 
-The `profile` view is most complex, and we'll handle it in Phase 4.
+The `profile` view is most complex, and we'll handle it next.
 
-Phase 3: Protecting your views
+Phase 3: Computing Grades
+-------------------------
+
+When viewed by a TA, the profile should show the number of submissions
+graded by and assigned to the current user for each assignment, like
+it does now. (Though make sure you're using the current user, not
+Garry Grader.) When viewed by the administrative user, it should show
+the graded and total number of submissions (ignoring who grades each
+submission).
+
+When viewed by a student, it should show a totally different table.
+The table body should have one row per assignment, and for each
+assignment it should show the assignment name (linked to the
+assignment page) and the status of the current student's submission
+for the assignment (with graded submissions showing the submission's
+percentage grade), as in the following screenshot:
+
+![](screenshots/profile-student.png)
+
+Additionally, there should be an extra table footer containing a
+single "current grade" row showing the student's computed current
+grade.
+
+Let's add status information to the `assignment.html` page as well. In
+the action box, show different text depending on the submission
+status:
+
+- For a submitted, graded assignment, show the text "Your submission,
+  filename.pdf, received X/Y points (Z%)".
+- For a submitted, ungraded, past due assignment, show the text "Your
+  submission, filename.pdf, is being graded".
+- For a submitted, not due assignment, show the text "Your current
+  submission is filename.pdf".
+- For a not submitted, not due assignment, show the text "No current
+  submission".
+- For a not submitted, past due assignment, show the text "You did not
+  submit this assignment and received 0 points".
+
+In each case, `filename.pdf` should be the submission's file's `name`.
+The X, Y, and Z values should be correctly computed. Show the form
+only if the assignment isn't due yet.
+
+At the moment, every submission is assigned to Garry. That's not nice!
+Write a `pick_grader` function. You can do that by just writing a new
+`def` line in `views.py`. It's just a function, not a controller! It
+only becomes a controller if you route URLs to it, which we won't.
+
+`pick_grader` should take one argument, an `Assignment`, and return
+one `User` object, the TA which should grade a new submission to that
+assignment. Specifically, it should return the TA with the fewest
+submissions to grade for that assignment. We want to find this TA in
+one query. To do so:
+
+- Select the "Teaching Assistants" group
+- Take its `user_set`
+- Use the [Django `annotate` function][docs-annotate] to annotate each
+  TA with a field called `total_assigned` which counts its `graded_set`.
+- Then order by `total_assigned`, to get the TAs in order of assigned
+  submissions
+- Get the `first` TA, which should now be the one with the fewest
+  `total_assigned` submissions.
+
+[docs-annotate]: https://docs.djangoproject.com/en/4.2/ref/models/querysets/#annotate
+
+We haven't talked about the `annotate` function in class, and this is
+a more advanced use of the Django query functionality. But you should
+be able to follow the recipe above using the documentation. The
+benefit of this approach is that the `pick_grader` method issues a
+single query and is thus faster.
+
+Now set the grader for new submissions using `pick_grader`. However,
+if a student has *already* submitted an assignment, and is simply
+replacing the file, don't change the assigned TA.
+
+Test that you can log in as a student and submit a submission to a
+not-yet-due assignment (such as "Homework 5"). Then use the Django
+admin to figure out which TA was assigned to grade that submission,
+log in as that TA, and check that the submission appears on the
+assignment's submissions page. Make sure new submissions get assigned
+to both TAs, Helen and Garry.
+
+
+Phase 4: Protecting your views
 ------------------------------
 
 Some of the views don't really make sense for some users, so we should
-restrict who can view them. Add the following line to your `views.py`:
+restrict who can view them.
 
-    from django.contrib.auth.decorators import login_required, user_passes_test
+First of all, our application is for logged-in users. Let's enforce
+that. Add the following line to your `views.py`:
+
+    from django.contrib.auth.decorators import login_required
 
 You can now use the [`login_required` decorator][docs-logreq] to mark
-certain views as being inaccessible to `AnonynousUser`. You should
+certain views as being inaccessible to `AnonymousUser`. You should
 make every view `login_required` except the `login_form` and
 `logout_form` views.
 
@@ -249,90 +336,26 @@ In the `login.html` template, use an HTML `<output>` element
 containing the `error` string if an `error` string is passed. It
 should show up bold and red.
 
-Finally, we need to make sure students can't see the submissions page
-or change grades. Write an `is_ta` function that takes in a `User` and
-returns `True` when the user is a TA or the administrator. Then use
-the [`user_passes_test` decorator][docs-upt] to make sure that the
-`submissions` and `grades` views are only accessible if the user
-passes the `is_ta` test.
-
 [docs-upt]: https://docs.djangoproject.com/en/4.2/topics/auth/default/#django.contrib.auth.decorators.user_passes_test
 
-Phase 4: Computing Grades
--------------------------
+Finally, let's make sure the submissions page is locked down. Only TAs
+should be able to access the submissions page. Also, TAs should only
+be able to change grades for submissions they are assigned.
 
-When viewed by a TA, it should show the number of submissions graded
-by and assigned to the current user for each assignment, like it does
-now. (Though make sure you're using the current user, not Garry
-Grader.) When viewed by the administrative user, it should show the
-graded and total number of submissions (ignoring who grades each
-submission).
+To enforce the first rule, test that the current user is a TA and
+raise the `PermissionDenied` exception, which you can import from
+`django.core.exceptions`, if not. (Alternatively, you can use the
+`user_passes_test` decorator if you'd like.)
 
-When viewed by a student, it should show a totally different table.
-The table body should have one row per assignment, and for each
-assignment it should show the assignment name (linked to the
-assignment page) and the status of the current student's submission
-for the assignment (with graded submissions showing the submission's
-percentage grade), as in the following screenshot:
-
-![](screenshots/profile-student.png)
-
-Additionally, there should be an extra table footer containing a
-single "current grade" row showing the student's computed current
-grade.
-
-to show students information about their submission. What
-exactly to show should depend on the submission status:
-
-- For a submitted, graded assignment, show the text "Your submission,
-  filename.pdf, received X/Y points (Z%)".
-- For a submitted, ungraded, past due assignment, show the text "Your
-  submission, filename.pdf, is being graded".
-- For a submitted, not due assignment, show the text "Your current
-  submission is filename.pdf".
-- For a not submitted, not due assignment, show the text "No current
-  submission".
-- For a not submitted, past due assignment, show the text "You did not
-  submit this assignment and received 0 points".
-
-In each case, `filename.pdf` should be the submission's file's `name`.
-The X, Y, and Z values should be correctly computed.
-
-If the assignment is not due, also show a form below that. The form
-should contain a single `file` input element and a button. It should
-submit to `/NNN/submit/`, where `NNN` is the assignment ID using the
-`POST` method and the `multipart/form-data` value for its `enctype`
-attribute.
-
-Write a `pick_grader` function. You can do that by just writing a new
-`def` line in `views.py`. It's just a function, not a controller! It
-only becomes a controller if you route URLs to it, which we won't.
-
-`pick_grader` should take one argument, an `Assignment`, and return
-one `User` object, the TA which should grade a new submission to that
-assignment. Specifically, it should return the TA with the fewest
-submissions to grade for that assignment. We want to find this TA in
-one query. To do so:
-
-- Select the "Teaching Assistants" group
-- Take its `user_set`
-- Use the [Django `annotate` function][docs-annotate] to annotate each
-  TA with a field called `total_assigned` which counts its `graded_set`.
-- Then order by `total_assigned`, to get the TAs in order of assigned
-  submissions
-- Get the `first` TA, which should now be the one with the fewest
-  `total_assigned` submissions.
-
-The `pick_grader` method should thus issue a single query.
-
-[docs-annotate]: https://docs.djangoproject.com/en/4.2/ref/models/querysets/#annotate
-
-Test that you can log in as a student and submit a submission to a
-not-yet-due assignment (such as "Homework 5"). Then use the Django
-admin to figure out which TA was assigned to grade that submission,
-log in as that TA, and check that the submission appears on the
-assignment's submissions page.
-
+The second rule is more complex, so add a `change_grade` method to
+your `Submission` model. It should take in a `User` object and a new
+`grade` and raise a `PermissionDenied` exception if the user is not
+allowed to change the grade. (If the user is allowed to change the
+grade, update the `grade` field but don't call `save`.) Call this
+method in the `submissions` controller instead of accessing the
+`grade` field directly. This way, the security policy is defined and
+enforced in a single place, and you're less likely to make a mistake
+in your code that subverts the security policy.
 
 
 Phase 5: Protecting file uploads
@@ -343,11 +366,18 @@ by the right people. Specifically, we want to make sure that the only
 people who can view a submission are the student who submitted it, the
 TA assigned to grade it, and the administrative user.
 
-In the `show_upload` controller, require login. Check that the current
-user is either 1) the submission's `author`, or 2) the submission's
-`grader`, or 3) the administrative user. If not, raise the
-`PermissionDenied` exception, which you can import from
-`django.core.exceptions`.
+Add a `view_submission` method on the `Submission` model. It should
+take in a `User` object and return the submission's `file` field. In
+this method, check that the current user is either 1) the submission's
+`author`, or 2) the submission's `grader`, or 3) the administrative
+user. If not, raise the `PermissionDenied` exception. Once again, we
+define this security policy in a single, centralized place to make it
+less likely that we get it wrong somewhere.
+
+Use this method in the `show_upload` controller. Also add the
+`login_required` decorator---this doesn't enforce security (since the
+anonymous user won't pass the test above) but it does help with the
+log-in-and-redirect logic you implemented in Phase 3.
 
 Check that if you log in as a TA, copy the URL for a submitted file,
 and then log out (or log in as a different TA or student), you get a
@@ -363,7 +393,11 @@ important or sensitive in here.) Let's also limit uploaded files to
 uploaded file. If it is too large (that is, over 64 MiB), do not save
 the uploaded file in the submission. Instead, re-render the assignment
 page with an error message. Put the error message in an `<output>`
-element at the start of the submission form.
+element at the start of the submission form. It's important that we
+use the `size` field instead of trying to read the file: if an evil
+user uploaded a really big file, reading that file might use a lot of
+memory or disk space. So we must check the file size before we check
+the file's contents.
 
 Let's also make sure we only accept PDF uploads. In your `submit`
 controller, before storing the uploaded file inside a submission,
@@ -372,8 +406,8 @@ uploaded file starts with the string `%PDF-`. You can check that
 property with `next(file.chunks()).startswith('%PDF-')`. Most tools
 will treat files with an extension of `.pdf` and starting with those
 five bytes as PDF files. If either of these checks fails, don't store
-the uploaded file in a submission. Instead, re-render the assignment
-page with an error message.
+the uploaded file in a submission. This will keep it from being saved
+to disk. Instead, re-render the assignment page with an error message.
 
 To make this more convenient for users, also add the `accept`
 attribute to the file input in the upload form. You should only accept
@@ -383,9 +417,10 @@ Finally, let's make sure uploaded files don't harm other users who
 view them (like TAs). In your `show_upload` controller, repeat the two
 checks above---that the file extension is `.pdf` and that the file
 contains `%PDF-` as its first five bytes---before showing it to the
-user. The dummy files aren't PDFs, so you can test those. The reason
-we're doing these tests twice (once on upload and once when viewing)
-is so that, if we ever add more checks, they'll apply retroactively to
+user. (You might want to put these checks in an `is_pdf` function.)
+The dummy files aren't PDFs, so you can test those. The reason we're
+doing these tests twice (once on upload and once when viewing) is so
+that, if we ever add more checks, they'll apply retroactively to
 already-uploaded files. Raise an `Http404` error if any of these tests
 fail. (You can import it from `django.http`.)
 
@@ -482,9 +517,13 @@ How you will use this
 Almost any large web application has a notion of identities,
 authentication, and authorization. The specific implementation here is
 simple but is sufficient for most small and even medium-sized
-applications. More complex authorization and authentication schemes,
-as necessary in applications with plugins or for integration between
-different systems, are still grounded in core ideas like identity and
+applications. And we followed best practices, like having a
+centralized security policy, that are helpful when applications get
+larger and have more-complex security policies.
+
+More complex authorization and authentication schemes, as necessary in
+applications with plugins or for integration between different
+systems, are still grounded in core ideas like identity and
 permission. Moreover, file uploads almost always come with extensive
 security checks, similar or even more stringent than the ones used
 here. You should be quite careful about allowing users to upload
@@ -496,45 +535,49 @@ Grading Rubrik
 This assignment is worth 100 points. The different phases are worth
 different weights:
 
-**Phase 1** is worth 15 points. It is graded on:
+**Phase 1** is worth 5 points. It is graded on:
 
 - It is possible to log in with a username and password
 - Invalid usernames or passwords don't log in
 - The profile page shows your username once you've logged in
 - It is possible to log out
 
-**Phase 2** is worth 30 points. It is graded on:
+**Phase 2** is worth 15 points. It is graded on:
 
-- The assignment (index) page does not show the "Grade" link to
-  students
+- The assignment page shows the correct action box for each user.
 - On the submissions page, TAs only see submissions they are assigned
-  to grade
-- On the submissions page, the admin user sees all submissions
+  to grade.
+- On the submissions page, the admin user sees all submissions.
+- Students are offered the option of submitting assignments
+
+**Phase 3** is worth 20 points. It is graded on:
+
 - On the profile page, TAs only see counts of submissions they are
   assigned to grade
 - On the profile page, the admin user sees counts of all submissions
 - On the profile page, students see their grade for each submission
 - The profile page correctly calculates students' current grades
+- Submissions are only allowed if the assignment is not yet due
+- Submitted assignments are automatically assigned a TA
 
-**Phase 3** is worth 20 points. It is graded on:
+**Phase 4** is worth 25 points. It is graded on:
 
 - All pages redirect to the login page if you're not logged in
 - "Next" redirects from the login page are handled correctly
 - Invalid logins show an error message
 - The submissions view is not available to students
-- The profile page changes what it shows based on who is logged in
+- TAs cannot change grades of submissions they are not assigned, even
+  by constructing a special HTTP POST request.
+- The security policy is enforced in model methods.
 
-**Phase 4** is worth 15 points. It is graded on:
+**Phase 5** is worth 30 points. It is graded on:
 
-- Students are offered the option of submitting assignments
-- Submissions are only allowed if the assignment is not yet due
-- Submitted assignments can be graded once the assignment is due
-- Submitted assignments are automatically assigned a TA
-
-**Phase 5** is worth 15 points. It is graded on:
-
-- Submission contents are linked from the submissions page
 - Only the student author and the assigned TA can view a submission
+- The security policy is enforced in model methods.
+- Only PDF files can be uploaded (checked with file name and initial bytes)
+- Only files below 64 MiB can be uploaded
+- Only PDF files can be viewed, even if uploaded
+- The `Content-Type` and `Content-Disposition` headers are sent
 
 **Cover Sheet** is worth 5 points. It is graded on:
 

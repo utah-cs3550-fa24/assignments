@@ -177,8 +177,10 @@ Note that you'll need to look up Alice's submission, if any, in the
 `assignment` controller.
 
 Below that paragraph should be a new form. It should submit to `/N/`
-and contain a file input (use `type=file`) and a button to submit the
-form. Don't forget the `{% csrf_token %}`.
+using the `POST` method and the `multipart/form-data` value for its
+`enctype` attribute. The form should contain a file input (use
+`type=file`) and a button to submit the form. Don't forget to add the
+`{% csrf_token %}`.
 
 Handle `POST` requests in the `assignment` controller. You will need to:
 
@@ -258,7 +260,7 @@ understand and correct the problem.
 
 Once you are sure everything works correctly, copy-and-paste the
 following text into a new empty text file called "HW4.md" in the root
-of the repository:
+of your repository:
 
 ```
 Homework 4 Cover Sheet
