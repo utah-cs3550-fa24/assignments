@@ -132,6 +132,8 @@ in the submissions table. You might need to do some data
 transformations before passing the list of submissions and errors to
 the template.
 
+Write good, or at least not bad, error messages.
+
 If you ever see an input field with in invalid submission ID, that
 error message doesn't correspond to any specific submission on the
 page. Instead, put a generic error message in an `<output>` element,

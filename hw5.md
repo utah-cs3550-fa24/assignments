@@ -29,25 +29,19 @@ In your `views.py` file, add the following line to the top:
 Next, open up the `login.html` template. It should contain an HTML
 form; make sure this form makes a `POST` request to `/profile/login`
 and contains the mandatory `{% csrf_token %}` block somewhere inside.
+As usual, this form submits to the same URL that it is served from.
 Also make sure that each `<input>` inside that form has a `name` and
-the appropriate `type`.
+an appropriate `type`.
 
-Note that the form submits to the same URL that it is served from.
-This is a common pattern, and it means the controller needs to use the
-HTTP request type (`GET` or `POST`) to decide whether to render the
-form or to process submissions.
+Find your `login_form` controller. Modify it so that, for `POST`
+requests, it:
 
-So find your `login_form` controller. Currently, it merely renders
-your `login.html` template. Modify the `login_form` controller so that
-it continues doing that for `GET` requests, but add a separate branch
-for `POST` requests. In that branch:
-
-1. Extract the username and password from the POST request;
-2. Then call [Django's `authenticate` function][docs-auth]
+1. Extracts the username and password from the POST request;
+2. Then calls [Django's `authenticate` function][docs-auth]
    (this function either returns a `User` object or `None`);
 3. If authentication succeeds,
-   call [Django's `login` function][docs-login]
-   and then redirect to the `/profile/` page.
+   calls [Django's `login` function][docs-login]
+   and then redirects to the `/profile/` page.
 4. If authentication fails, re-render the form,
    same as if it were a `GET` request.
 
@@ -70,8 +64,8 @@ Test that you can log in and see the username you've logged in as on
 the profile page. If you've run `makedata.py`, you can log in as:
 
 - The admin user `pavpan`
-- The TAs `ta1` and `ta2`
-- The students `s1`, `s2`, and `s3`
+- The TAs `g` and `h`
+- The students `a`, `b`, `c`, and `d`
 
 Each user's password is the same as their username.
 
@@ -82,7 +76,7 @@ this new `logout_form` controller. Modify the `profile.html` template
 so that the "Log out" link takes the user to `/profile/logout`.
 
 Test that logging out works correctly. When you are logged out, you
-should either see no username or "AnonymousUser" on this page.
+should either see no username or "AnonymousUser" on the profile page.
 
 If you can log in, see your username on the profile page, and log out,
 you should be done with this phase. You can confirm by using the
@@ -101,7 +95,7 @@ should match what most actual professors do in your actual classes.
 
 Basically, the grade for a student is computed by considering each
 assignment in turn and looking at the student's submission for that
-assignment. The student's submission could have one of four statuses:
+assignment. The student's submission could be in one of four states:
 
 - Submitted and graded
 - Submitted but not yet graded
@@ -135,14 +129,14 @@ points.
 | HW1        | 100    | 75     | Graded   | 70    | 100       | 93.33  |
 | HW2        | 50     | 75     | Missing  |       | 50        | 0      |
 | HW3        | 60     | 100    | Graded   | 73    | 60        | 43.8   |
-| HW4        | 74     | 90     | Ungraded |       | 0         | 0      |
-| HW5        | 100    | 50     | Not Due  |       | 0         | 0      |
+| HW4        | 74     | 90     | Ungraded |       |           | 0      |
+| HW5        | 100    | 50     | Not Due  |       |           | 0      |
 
 In total, this student had 210 available points and earned 137.13, for
 a current grade of 65.3%.
 
 A student with zero available grade points (because no assignments are
-due yet, for example) are considered to have a current grade of 100%.
+due yet, for example) is considered to have a current grade of 100%.
 
 Phase 2: Customizing views
 --------------------------
@@ -171,49 +165,31 @@ def is_student(user):
 Besides students and TAs, there is also the `AnonymousUser` (which you
 can check for with `is_authenticated`, as above) and also the
 administrative user named `pavpan`, which you can test for with the
-`is_superuser` field (only true for the administrative user). In most
-cases, the anonymous user is treated like a student while the
-administrative user is treated like a TA.
+`is_superuser` field. In most cases, the anonymous user is treated
+like a student while the administrative user is treated like a TA.
 
 To customize a view, you may want to pass an `is_student` or `is_ta`
 variable from the controller to the view.
 
 Now let's customize each view.
 
-The `assignments` view does not need any customization.
+The `assignments` view (you might call it `index`) does not need any
+customization.
 
-The `assignment` view (you might call it `index`) should change its
-"action card" based on the logged in user. For a TA or the
-administrative user, it should continue showing what it currently
-does: a count of total submissions, total students, and the number of
-submissions assigned to the current TA. For a student or the
-`AnonymousUser`, it should not contain any content at all. (You'll add
-some in Phase 4.)
+The `assignment` view should change its "action card" based on the
+logged in user. Students and the `AnonymousUser` should see the action
+card that allows uploading files to make a new submission. TAs and the
+administrative user should see the action card that shows total submissions.
+In either case, the card and form handling should be specialized to
+the current user, not Alice Algorithm or Garry Grader. One tweak is
+that for the administrative user, instead of showing total submissions
+assigned to the current grader, it should show total submissions.
 
 The `submissions` view should show all submissions assigned to the
 current user when viewed by a TA, or just all submissions when viewed
 by the administrative user.
 
-The `profile` view is most complex.
-
-When viewed by a TA, it should show the number of submissions graded
-by and assigned to the current user for each assignment, like it does
-now. (Though make sure you're using the current user, not `ta1`.) When
-viewed by the administrative user, it should show the graded and total
-number of submissions (ignoring who grades each submission).
-
-When viewed by a student, it should show a totally different table.
-The table body should have one row per assignment, and for each
-assignment it should show the assignment name (linked to the
-assignment page) and the status of the current student's submission
-for the assignment (with graded submissions showing the submission's
-percentage grade), as in the following screenshot:
-
-![](screenshots/profile-student.png)
-
-Additionally, there should be an extra table footer containing a
-single "current grade" row showing the student's computed current
-grade.
+The `profile` view is most complex, and we'll handle it in Phase 4.
 
 Phase 3: Protecting your views
 ------------------------------
@@ -243,7 +219,13 @@ you log in, you should be redirected back to whatever page you were
 originally trying to access. Django supports this: when the
 `login_required` decorator sends you to the login page, it includes a
 `GET` parameter called `next` containing the URL that the user should
-be sent back to upon successful login.
+be redirected to upon successful login.
+
+Note the chain of events here---the user is first sent to the login
+page, and in this first `GET` request there's a `next` parameter. Then
+they fill out the form, making a *second* `POST` request, and we need
+to redirect at that point. So we need to plumb this `next` parameter
+from the first request to the second.
 
 So, when the `login_form` controller gets a `GET` request, extract the
 `next` variable from the `request.GET` parameters and pass that to the
@@ -263,9 +245,9 @@ assignments page.
 While we're editing `login_form`, let's also add an error message when
 login fails. When login fails, pass an `error` parameter to the
 template containing the string "Username and password do not match".
-In the `login.html` template, output an HTML `<output>` element
-containing the `error` string if an `error` string is passed. In your
-`main.css`, color all `output` elements red.
+In the `login.html` template, use an HTML `<output>` element
+containing the `error` string if an `error` string is passed. It
+should show up bold and red.
 
 Finally, we need to make sure students can't see the submissions page
 or change grades. Write an `is_ta` function that takes in a `User` and
@@ -276,16 +258,31 @@ passes the `is_ta` test.
 
 [docs-upt]: https://docs.djangoproject.com/en/4.2/topics/auth/default/#django.contrib.auth.decorators.user_passes_test
 
-Phase 4: Enabling file uploads
-------------------------------
+Phase 4: Computing Grades
+-------------------------
 
-From a TA's point of view, the grades application should now work
-fairly well, but from a student's point of view there is a big
-problem: it is not yet possible to submit assignments. Let's fix that.
+When viewed by a TA, it should show the number of submissions graded
+by and assigned to the current user for each assignment, like it does
+now. (Though make sure you're using the current user, not Garry
+Grader.) When viewed by the administrative user, it should show the
+graded and total number of submissions (ignoring who grades each
+submission).
 
-First, modify the `assignment` view and `index.html` template to show
-students information about their submission. What exactly to show
-should depend on the submission status:
+When viewed by a student, it should show a totally different table.
+The table body should have one row per assignment, and for each
+assignment it should show the assignment name (linked to the
+assignment page) and the status of the current student's submission
+for the assignment (with graded submissions showing the submission's
+percentage grade), as in the following screenshot:
+
+![](screenshots/profile-student.png)
+
+Additionally, there should be an extra table footer containing a
+single "current grade" row showing the student's computed current
+grade.
+
+to show students information about their submission. What
+exactly to show should depend on the submission status:
 
 - For a submitted, graded assignment, show the text "Your submission,
   filename.pdf, received X/Y points (Z%)".
@@ -306,28 +303,6 @@ should contain a single `file` input element and a button. It should
 submit to `/NNN/submit/`, where `NNN` is the assignment ID using the
 `POST` method and the `multipart/form-data` value for its `enctype`
 attribute.
-
-Add a `submit` controller and route `/<int:assignment_id/submit/` to
-it in `urls.py`. This controller should require login and make sure
-that the user passes the `is_student` test.
-
-Inside this controller, you will need to:
-
-- Look up the assignment from the ID in the URL
-- Check that the assignment is not past due. If it is already past
-  due, return a 400 response.
-- Get the submitted file object from `request.FILES`
-- Look up the current user's submission for that assignment
-- If a submission exists, change its `file` field to the submitted
-  file object
-- If a submission does not exist, create one.
-- Save the submission
-- Redirect back to this assignment's page
-
-Note that, when creating a new submission, you will need to assign a
-grader and a score for the submission. The score is easy: new
-submissions haven't been graded, so leave the score `None`. The grader
-is a little more challenging.
 
 Write a `pick_grader` function. You can do that by just writing a new
 `def` line in `views.py`. It's just a function, not a controller! It
@@ -350,50 +325,26 @@ one query. To do so:
 
 The `pick_grader` method should thus issue a single query.
 
+[docs-annotate]: https://docs.djangoproject.com/en/4.2/ref/models/querysets/#annotate
+
 Test that you can log in as a student and submit a submission to a
 not-yet-due assignment (such as "Homework 5"). Then use the Django
 admin to figure out which TA was assigned to grade that submission,
 log in as that TA, and check that the submission appears on the
 assignment's submissions page.
 
-[docs-annotate]: https://docs.djangoproject.com/en/4.2/ref/models/querysets/#annotate
+
 
 Phase 5: Protecting file uploads
 --------------------------------
 
-Finally, we need to make sure that TAs can actually view uploaded
-files. This has a tricky security property: we want to make sure that
-the only people who can view a submission are the student who
-submitted it, the TA assigned to grade it, and the administrative
-user.
+Finally, we need to make sure that uploaded files can only be viewed
+by the right people. Specifically, we want to make sure that the only
+people who can view a submission are the student who submitted it, the
+TA assigned to grade it, and the administrative user.
 
-Edit your `settings.py` and add the following two lines:
-
-    MEDIA_ROOT = "uploads/"
-    MEDIA_URL = "uploads/"
-
-Edit `submissions.html` and make sure each row in the table links to
-the submission's file's `url` field. This `url` field should start
-with `/uploads/`. Similarly, in `assignment.html`, and like the
-submission file name to the submission's file's `url` field. These
-links won't work yet.
-
-We now need to add a controller to serve these uploaded files. Add the
-following line to your `urls.py`:
-
-    urlpatterns = [
-       # ...
-      path('uploads/<str:filename>/, views.show_upload),
-    ]
-
-
-Define a `show_upload` controller, which takes the normal `request`
-argument and also a `filename` argument, which will be a string. The
-controller should require login.
-
-Inside this controller, look up the submission whose file's `name`
-field is equal to the `filename` argument. Check that the current user
-is either 1) the submission's `author`, or 2) the submission's
+In the `show_upload` controller, require login. Check that the current
+user is either 1) the submission's `author`, or 2) the submission's
 `grader`, or 3) the administrative user. If not, raise the
 `PermissionDenied` exception, which you can import from
 `django.core.exceptions`.
@@ -404,25 +355,69 @@ and then log out (or log in as a different TA or student), you get a
 important, because the file names for uploaded files are guessable,
 and you wouldn't want students looking at each other's submissions.
 
-Finally, if the user is allowed to view the submission, execute this
-code (which assumes that the submission is stored in `submission`):
+We also want to make sure file uploads do not harm our server. We
+should already be putting those files in a separate `uploads/` folder,
+which is a good start. (We will make sure never to store anything
+important or sensitive in here.) Let's also limit uploaded files to
+64MiB. In your `submit` controller, test the `size` field of the
+uploaded file. If it is too large (that is, over 64 MiB), do not save
+the uploaded file in the submission. Instead, re-render the assignment
+page with an error message. Put the error message in an `<output>`
+element at the start of the submission form.
 
-    def show_upload(request, filename):
-        # ...
-        with submission.file.open() as fd:
-            response = HttpResponse(fd)
-            response["Content-Disposition"] = \
-                f'attachment; filename="{submission.file.name}"'
-            return response
+Let's also make sure we only accept PDF uploads. In your `submit`
+controller, before storing the uploaded file inside a submission,
+check that its `name` field ends with `.pdf`. Also, make sure the
+uploaded file starts with the string `%PDF-`. You can check that
+property with `next(file.chunks()).startswith('%PDF-')`. Most tools
+will treat files with an extension of `.pdf` and starting with those
+five bytes as PDF files. If either of these checks fails, don't store
+the uploaded file in a submission. Instead, re-render the assignment
+page with an error message.
 
-This code is a little mysterious, but basically it opens the file and
-sends its contents in the HTTP Response, except that it also
-specifies, using the `Content-Disposition` header, that the browser
-should treat this like a file download instead of opening the file in
-a new tab.
+To make this more convenient for users, also add the `accept`
+attribute to the file input in the upload form. You should only accept
+`application/pdf` files.
 
-Test that you can now view download submitted files if you are logged
-in appropriately.
+Finally, let's make sure uploaded files don't harm other users who
+view them (like TAs). In your `show_upload` controller, repeat the two
+checks above---that the file extension is `.pdf` and that the file
+contains `%PDF-` as its first five bytes---before showing it to the
+user. The dummy files aren't PDFs, so you can test those. The reason
+we're doing these tests twice (once on upload and once when viewing)
+is so that, if we ever add more checks, they'll apply retroactively to
+already-uploaded files. Raise an `Http404` error if any of these tests
+fail. (You can import it from `django.http`.)
+
+Finally, we don't want the user's browser to try to *guess* what type
+of file the upload is. It might guess wrong, with bad results. Modify
+your `show_upload` controller to construct the `HttpResponse` on one
+line and return it on another. Before returning the response, set two
+headers on it:
+
+- `Content-Type` should be set to `application/pdf`, so the browser
+  knows it is a PDF file.
+- `Content-Disposition` should be set to `attachment; filename="..."`
+  where the `...` is the submission's file name. This indicates to the
+  browser that it should treat this as a "download", not a "page
+  navigation".
+  
+This is not a complete list of steps you'd need to take to make this
+grades application safe (for example---is it really safe for the
+grader to view arbitrary, untrusted PDF files?) but it's pretty good.
+This might seem like quite a lot of work. Yes! Support for file
+uploads and especially downloads opens you up to a lot of possible
+attacks, some of them difficult to prevent.
+
+In many cases the best solution isn't extensive technical protections
+but logging and out-of-band enforcement mechanisms. For example, you
+might imagine that if a student does upload a PDF file that somehow
+hacks the grader's computer, this would be addressed with university
+disciplinary action, not with ever-more-elaborate checks. Though this
+out-of-band enforcement mechanism would itself want to check logs
+(say, to determine who in fact uploaded the file), which would then
+also need to be protected from attackers. Security is very hard!
+
 
 Write a cover sheet
 -------------------
@@ -433,7 +428,8 @@ requirements are met. Test logging in as students, TAs, and the
 professor and using various portions of the site.
 
 Once you are sure everything works correctly, copy-and-paste the
-following text into a new empty text file called "HW5.md":
+following text into a new empty text file called "HW5.md" in the root
+of your repository:
 
 ```
 Homework 5 Cover Sheet
@@ -478,20 +474,21 @@ interesting and the most difficult aspect of this assignment. Don't
 just make them a single sentence; the instructors use your answers to
 make these assignments more interesting and easier.
 
-Once you are done, commit everything and push it to Github. **Make
-sure to include the text "Please grade" in your final commit message**
-to help TAs identify the right commit to grade.
+Once you are done, commit everything and push it to Github.
 
 How you will use this
 ---------------------
 
 Almost any large web application has a notion of identities,
-authentication, and authorization. The specific implementation here,
-using users and roles, is simple but is sufficient for most small and
-even medium-sized applications. More complex authorization and
-authentication schemes, as necessary in applications with plugins or
-for integration between different systems, are still grounded in core
-ideas like identity and permission.
+authentication, and authorization. The specific implementation here is
+simple but is sufficient for most small and even medium-sized
+applications. More complex authorization and authentication schemes,
+as necessary in applications with plugins or for integration between
+different systems, are still grounded in core ideas like identity and
+permission. Moreover, file uploads almost always come with extensive
+security checks, similar or even more stringent than the ones used
+here. You should be quite careful about allowing users to upload
+arbitrary files to your server.
 
 Grading Rubrik
 --------------

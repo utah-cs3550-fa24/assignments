@@ -101,25 +101,25 @@ is to catch up!
 
 The following is an aspirational course schedule. It may change as the course progresses. Any changes will be reviewed in class by the instructor.
 
-| Week starting | Topic                             |
-|---------------|-----------------------------------|
-| August 19     | HTML                              |
-| August 26     | CSS, **Homework 1 due**           |
-| September 2   | Flex-box                          |
-| September 9   | Layout, **Homework 2 due**        |
-| September 16  | Back-ends                         |
-| September 23  | Data modeling, **Homework 3 due** |
-| September 30  | Review and **Midterm**            |
-| October 7     | *Fall break*                      |
-| October 14    | Views and templates               |
-| October 21    | Forms, **Homework 4 due**         |
-| October 28    | Users and groups                  |
-| November 4    | Security, **Homework 5 due**      |
-| November 11   | JavaScript                        |
-| November 18   | AJAX, **Homework 6 due**          |
-| November 25   | Cloud computing                   |
-| December 2    | Conclusion, **Homework 7 due**    |
-| December 9    | **Final**                         |
+| Week starting | Topic                          |
+|---------------|--------------------------------|
+| August 19     | HTML                           |
+| August 26     | CSS, **Homework 1 due**        |
+| September 2   | Layout                         |
+| September 9   | Flex-box, **Homework 2 due**   |
+| September 16  | Django                         |
+| September 23  | Back-ends, **Homework 3 due**  |
+| September 30  | Review and **Midterm**         |
+| October 7     | *Fall break*                   |
+| October 14    | Forms                          |
+| October 21    | Auth, **Homework 4 due**       |
+| October 28    | Security                       |
+| November 4    | JavaScript, **Homework 5 due** |
+| November 11   | AJAX                           |
+| November 18   | Networking, **Homework 6 due** |
+| November 25   | Cloud computing                |
+| December 2    | Conclusion, **Homework 7 due** |
+| December 9    | **Final**                      |
 
 # Policies
 
