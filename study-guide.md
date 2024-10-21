@@ -195,7 +195,8 @@ cookie. You should be able to define authorization and authentication.
 You should be able to use `request.user`, `authenticate`, `login`, and
 `logout` for logging users in and out. You should be able to test if a
 Django `User` is a member of a `Group` and raise `PermissionDenied` if
-an authorization check fails.
+an authorization check fails. You should be able to explain the benefits
+of centralized access control checks.
 
 You should be able to explain what an injection vulnerability is, and
 what the benefits and risks are of using `|safe` or `.raw()` in
