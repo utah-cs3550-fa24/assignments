@@ -186,10 +186,11 @@ forms.
 Security
 ========
 
-You should be able to define authorization and authentication. You
-should be able to explain cookies, identity, and session data. You
-should be able to describe simple security policies in terms of
-objects, actions, users, and groups.
+You should be able to describe simple security policies in terms
+of which users can perform which actions. You should be able to
+explain cookies, identity, and session data. You should be able to
+describe, at a high level, how user log ins work via sessions and
+cookie. You should be able to define authorization and authentication. 
 
 You should be able to use `request.user`, `authenticate`, `login`, and
 `logout` for logging users in and out. You should be able to test if a
