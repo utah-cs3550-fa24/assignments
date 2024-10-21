@@ -166,11 +166,11 @@ to use the `request.GET`, `request.POST`, and `request.FILES`
 dictionaries to access form data. You should be able to describe the
 risks associated with file uploads.
 
-**Validation**: You should know how to catch errors raised by queries
-and how to return 404 or other error pages. You should be able to
-handle errors when validating form data in a Django view function and
-be able to either re-display the form with an error message or
-redirect the user when the form is submitted successfully.
+**Validation**: You should know how to catch `DoesNotExist` errors
+from queries and return `Http404` errors. You should know how to
+catch `ValueError`s from parsing numbers. You should be able to write
+a form handler that re-renders on failure and redirects on success,
+and where the re-rendering uses some errors data structures.
 
 You should be able to use the following input element attributes for
 client-side validation:
@@ -178,7 +178,6 @@ client-side validation:
 - `required`
 - `min` / `max`
 - `minlength` / `maxlength`
-- `pattern`
 - `accept`
 
 You should also be able to use `:valid` / `:invalid` to style HTML
