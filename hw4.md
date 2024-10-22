@@ -37,7 +37,7 @@ Modify your `submissions` function to add an `if` statement to the
 beginning, like this:
 
 ```python
-def grade(request, assignment_id):
+def submissions(request, assignment_id):
     if request.method == "POST":
         return redirect(f"/{assignment_id}/submissions")
     # ...
@@ -93,10 +93,10 @@ query.
 Phase 3: Validating grades
 --------------------------
 
-Your `grade` view function needs to handle various kinds of errors.
-First, it needs to make sure grades are numbers. Second, they must be
-positive numbers between 0 and the number of points offered on that
-assignment. (We won't support extra credit in our application.)
+Your `submissions` view function needs to handle various kinds of
+errors. First, it needs to make sure grades are numbers. Second, they
+must be positive numbers between 0 and the number of points offered on
+that assignment. (We won't support extra credit in our application.)
 Finally, the grades have to be for submission IDs that actually exist
 and are for the correct assignment.
 
