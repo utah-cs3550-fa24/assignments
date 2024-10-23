@@ -233,7 +233,12 @@ status:
 
 In each case, `filename.pdf` should be the submission's file's `name`.
 The X, Y, and Z values should be correctly computed. Show the form
-only if the assignment isn't due yet.
+only if the assignment isn't due yet. Also, in your `assignment`
+controller, before saving an upload make sure the deadline has not
+passed. Otherwise, return an `HttpResponseBadRequest`, which you can
+import from `django.http`. (As usual, we must repeat every check both
+on the server side, where the upload is handled, and on the client
+side, when generating the form.)
 
 At the moment, every submission is assigned to Garry. That's not nice!
 Write a `pick_grader` function. You can do that by just writing a new
@@ -337,6 +342,30 @@ containing the `error` string if an `error` string is passed. It
 should show up bold and red.
 
 [docs-upt]: https://docs.djangoproject.com/en/4.2/topics/auth/default/#django.contrib.auth.decorators.user_passes_test
+
+Before rendering the login page *or* redirecting to the `next`
+parameter, we need to make sure this URL is to our own server;
+otherwise we'd have an "open redirect" vulnerability. This is a little
+tricky; the code needs to look like this:
+
+```
+def login_form(request):
+    if request.method == "POST":
+        # ...
+        next_url = request.POST["next"]
+        if url_has_allowed_host_and_scheme(next_url, None):
+            return redirect(next_url)
+        else:
+            return redirect("/")
+```
+
+Here the `url_has_allowed_host_and_scheme` function checks whether the
+redirect is to our own server, which is necessary to prevent open
+redirects. If the URL includes a hostname, and is thus dangerous, this
+function will return `False` and in this case we redirect to the main
+page instead of the attacker-supplied URL. You can test this by
+logging in to, say, `/profile/login?next=http://google.com`; you
+should not be redirected to Google.
 
 Finally, let's make sure the submissions page is locked down. Only TAs
 should be able to access the submissions page. Also, TAs should only
