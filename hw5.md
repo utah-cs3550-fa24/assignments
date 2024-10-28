@@ -61,8 +61,8 @@ In your `profile` view, pass `request.user` to the template. In the
 `get_full_name`. This step is important because it allows you to test
 whether or not you actually logged in.
 
-Test that you can log in and see the username you've logged in as on
-the profile page. If you've run `makedata.py`, you can log in as:
+Test that you can log in and see the user you've logged in as on the
+profile page. If you've run `makedata.py`, you can log in as:
 
 - The admin user `pavpan`
 - The TAs `g` and `h`
@@ -77,7 +77,7 @@ this new `logout_form` controller. Modify the `profile.html` template
 so that the "Log out" link takes the user to `/profile/logout`.
 
 Test that logging out works correctly. When you are logged out, you
-should either see no username or "AnonymousUser" on the profile page.
+should either see no name or "AnonymousUser" on the profile page.
 
 If you can log in, see your user's name on the profile page, and log
 out, you should be done with this phase. You can confirm by using the

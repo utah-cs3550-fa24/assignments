@@ -143,11 +143,11 @@ ID.
 In your `main.css`, make `<output>` elements bold and red.
 
 Make sure the `<input>` elements on the submissions page have the
-right `type` attribute. Add `min` and `max` attributes. Add a rule
-your `main.css` giving invalid input elements a 2 pixel, solid red
-border. Make sure that typing in a non-number, or too-big or too-small
-a number, prevents form submission and gives the input field a red
-border.
+right `type` attribute. Add `min`, `max`, and `step` attributes. Allow
+arbitrary fractions. Add a rule your `main.css` giving invalid input
+elements a 2 pixel, solid red border. Make sure that typing in a
+non-number, or too-big or too-small a number, prevents form submission
+and gives the input field a red border.
 
 Clearly label these rules in your `main.css` file, such as with a
 comment reading "Homework 4 changes here".
