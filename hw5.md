@@ -1,7 +1,7 @@
 CS 3550 Assignment 5 (Permissions)
 ==================================
 
-**Status**: Draft \
+**Status**: Final \
 **Due**: Phase 1 due **17 Nov**, Phase 2--5 due **24 Nov**
 
 About
