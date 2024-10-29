@@ -27,7 +27,7 @@ In your `views.py` file, add the following line to the top:
     from django.contrib.auth import authenticate, login, logout
 
 Next, open up the `login.html` template. It should contain an HTML
-form; make sure this form makes a `POST` request to `/profile/login`
+form; make sure this form makes a `POST` request to `/profile/login/`
 and contains the mandatory `{% csrf_token %}` block somewhere inside.
 As usual, this form submits to the same URL that it is served from.
 Also make sure that each `<input>` inside that form has a `name` and
@@ -72,7 +72,7 @@ Each user's password is the same as their username.
 
 Next, define a `logout_form` controller. This controller should call
 [Django's `logout` function][docs-logout] and redirect to
-`/profile/login`. Modify `urls.py` so that `/profile/logout` routes to
+`/profile/login/`. Modify `urls.py` so that `/profile/logout/` routes to
 this new `logout_form` controller. Modify the `profile.html` template
 so that the "Log out" link takes the user to `/profile/logout`.
 
@@ -301,7 +301,7 @@ make every view `login_required` except the `login_form` and
 To make this work correctly, we'll need to make a few other changes.
 First, open your `settings.py` and add this line to the bottom:
 
-    LOGIN_URL = "/profile/login"
+    LOGIN_URL = "/profile/login/"
     
 You should now be able to log out, attempt to visit the profile or
 assignments page, and be sent back to the login page.
@@ -364,8 +364,8 @@ redirect is to our own server, which is necessary to prevent open
 redirects. If the URL includes a hostname, and is thus dangerous, this
 function will return `False` and in this case we redirect to the main
 page instead of the attacker-supplied URL. You can test this by
-logging in to, say, `/profile/login?next=http://google.com`; you
-should not be redirected to Google.
+logging in to, say, `/profile/login/?next=http%3A%2F%2Fgoogle.com`;
+you should not be redirected to Google.
 
 Finally, let's make sure the submissions page is locked down. Only TAs
 should be able to access the submissions page. Also, TAs should only

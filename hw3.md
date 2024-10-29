@@ -72,9 +72,9 @@ Now add these entries to the `urlpatterns` list:
 ```python
 path("", views.index),
 path("<int:assignment_id>/", views.assignment),
-path("<int:assignment_id>/submissions", views.submissions),
+path("<int:assignment_id>/submissions/", views.submissions),
 path("profile/", views.profile),
-path("profile/login", views.login_form),
+path("profile/login/", views.login_form),
 ```
 
 If you get an `AttributeError`, make sure you defined all five methods
