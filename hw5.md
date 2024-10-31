@@ -16,7 +16,7 @@ application. Specifically, you will:
 - Enforce a security policy for all existing views / actions
 - Set up file uploads and secure them
 
-The assignment is due Friday, 24 Nov before midnight. The course's
+The assignment is due Friday, 8 Nov before midnight. The course's
 normal extension policy applies.
 
 Phase 1: Enabling logins
