@@ -432,7 +432,7 @@ Let's also make sure we only accept PDF uploads. In your `submit`
 controller, before storing the uploaded file inside a submission,
 check that its `name` field ends with `.pdf`. Also, make sure the
 uploaded file starts with the string `%PDF-`. You can check that
-property with `next(file.chunks()).startswith('%PDF-')`. Most tools
+property with `next(file.chunks()).startswith(b'%PDF-')`. Most tools
 will treat files with an extension of `.pdf` and starting with those
 five bytes as PDF files. If either of these checks fails, don't store
 the uploaded file in a submission. This will keep it from being saved
