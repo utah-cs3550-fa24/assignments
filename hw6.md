@@ -2,7 +2,7 @@ CS 3550 Assignment 6 (JavaScript)
 =================================
 
 **Status**: Draft \
-**Due**: Phase 1 due **1 Dec**, Phase 2--5 due **8 Dec**
+**Due**: Phase 1 due **15 Nov**, Phase 2--5 due **22 Nov**
 
 About
 -----
@@ -12,13 +12,11 @@ add a variety of convenient user interactions to the grades
 application. Specifically, you will:
 
 - Make tables sortable and filterable
-- Use `fetch` to submit forms asynchronously
+- Use AJAX to submit forms asynchronously
 - Build a front-end UI for estimating future grades
 
-The assignment is due Friday, 8 Dec before midnight. The course's
-normal extension policy applies. Please note that the final is on 11
-December. I therefore **strongly encourage** finishing the assigment
-early.
+The assignment is due Friday, 15 Nov before midnight. The course's
+normal extension policy applies.
 
 Phase 1: Adding JavaScript
 --------------------------
@@ -26,30 +24,20 @@ Phase 1: Adding JavaScript
 Create a file named `main.js` in your static directory. Add the
 following contents to it:
 
-    export function say_hi() {
-        console.log("Hello");
-    }
+    console.log("Hello");
 
-This defines a function named `say_hi` which writes to the browser
-debugging console when it's run.
-
-Note the `export` keyword. That's because this is a "JavaScript
-module". We'll be using JavaScript modules in this class for our
-JavaScript code. Modules (often called "ES6 modules" after the version
-of JavaScript where they were introduced) are a relatively new feature
-and you'll see a lot of older JavaScript tutorials not use them.
+This writes to the browser debugging console when it's run.
 
 Now edit your `header.html` template (which should be included from
 all other templates) and add the following lines to it:
 
-    <script type=module>
-      import { say_hi } from "/static/main.js";
-      say_hi()
-    </script>
+    <script type=module src="/static/main.js"></script>
 
-A few features of this code deserve explanation. We use `type=module`
-to indicate that we are using modules. That is what allows us to use
-the `import` statement. All of our scripts will be modules.
+Note that we are including the script as a "JavaScript
+module". We'll be using JavaScript modules in this class for our
+JavaScript code. Modules (often called "ES6 modules" after the version
+of JavaScript where they were introduced) are a relatively new feature
+and you'll see a lot of older JavaScript tutorials not use them.
 
 Run your server and visit a page. (Since you edited `header.html`, any
 page should do.) Open the browser developer console. You should see
@@ -60,21 +48,10 @@ get help.
 Next, we will download the jQuery library that we will be using. In
 the root of your repository, execute the following command:
 
-    git submodule add https://github.com/jquery/jquery static/jquery
-    
-> [!CAUTION]
-> An earlier version of these instructions instead asked you to
-> download the `3.x-stable` branch of jQuery, which doesn't work as it
-> does not support modules. If you did so, execute the following
-> command from the same folder:
->
->     git -C static/jquery checkout main
->
-> This should switch your jQuery download to the latest `main` branch.
-> You will be asked to (and should) commit the `.gitmodules` file.
+    git submodule add https://github.com/jquery/jquery -b 4.0.0-beta static/jquery
 
-This will download the latest version of jQuery, to a folder named
-`jquery` inside your static folder. It should take about a minute to
+This will download a recent version of jQuery to a folder named
+`jquery` inside your `static` folder. It should take about a minute to
 run. If you see any lines beginning with `fatal` or `error`, something
 has gone wrong. Get help immediately. If you do not, commit and push
 your changes to Github; the changes should be to a new file called
@@ -85,50 +62,35 @@ more of the autotester passing. If it does not, get help.
 > If you are using more than one machine, you may find that on other
 > machines, your `static/jquery` folder is empty. In that case, you
 > should run:
-> 
-    > git submodule init
-    > git submodule update
-> 
+>
+>     git submodule --remote --init update
+>
 > That should download the `jquery` library to the new machine as well
 
 Add the following line to the top of `main.js`:
 
     import { $ } from "/static/jquery/src/jquery.js";
-    
+
 This imports the `$` function from the jQuery library. In jQuery the
 `$` function is used to wrap HTML nodes with jQuery features.
 
-In `header.html` delete the existing `<script>` block and replace it
-with the following:
+Replace the existing `console.log` line with this function:
 
-    <script type="module" src="/static/main.js"></script>
-
-The `src` attribute is more or less shorthand for `import`ing the
-named file.
-
-Then replace the `say_hi` definition with this:
-
-    export function say_hi(elt) {
-        console.log("Say hi to", elt);
+    function say_hi(elt) {
+        console.log("Welcome to", elt.text());
     }
 
-and add this to the end of the file:
-
     say_hi($("h1"));
-    
-You should now see it print the words "Say hi to" followed by a
-JavaScript object definition. This object definition is how
-jQuery-wrapped elements print. You can usually expand the `0` field to
-see the underlying element being wrapped. If it does not, get help.
 
-Commit all changes and push to Github. You should now pass the
+You should now see it print the words "Welcome to" followed by the title of the
+page. If it does, commit all changes and push to Github. You should now pass the
 autotester. If you do, you are done with Phase 1.
 
 Phase 2: Sorting and filtering
 ------------------------------
 
-The `assignments` and `profile` views both contain a table. The
-right-most column of the table is a column of numbers. We want to add
+The `profile` view for students contains a table. The
+right-most column of the table is a column of numbers (mostly). We want to add
 the ability to click on that column to sort by it; clicking once
 should sort it in ascending order (later rows are bigger), and
 clicking again should sort it in descending order (later rows are
@@ -141,9 +103,7 @@ make it sortable. The rest of this phase explains how to do so.
 First, the `make_table_sortable` function should select the last
 header cell in the table header. You will need to add a `click`
 handler to this header cell. Use the [jQuery `on` method][jq-click] to
-do so. You are expected to read the documentation to learn how to use
-this method on your own, though of course you should feel free to ask
-for help or with questions on Discord or in office hours.
+do so.
 
 The table can be in one of three states: unsorted, sorted ascending,
 or sorted descending. We'll save the table's current state by making
@@ -156,34 +116,34 @@ state the table is in. If it's unsorted or sorted descending, make it
 instead sorted ascending. If it's sorted ascending, make it sorted
 descending.
 
-Test your code by running the server, clicking on the table header,
-and confirming that the classes are changed correctly. Make sure you
-don't end up in a situation where both the `sort-asc` and `sort-desc`
-classes are set.
+Test your code by running the server, clicking on the table header, and
+confirming in the developer tools that the classes are changed
+correctly. Make sure you don't end up in a situation where both the
+`sort-asc` and `sort-desc` classes are set.
 
 [jq-click]: https://api.jquery.com/click/
 [jq-class]: https://api.jquery.com/category/manipulation/class-attribute/
 
 Next, in the click handler, you will want to sort the table rows. It's
 important *not* to also sort the table header row or the table footer
-row (on the profile page for students). So you should make sure (using
-the browser developer tools) that only data rows are inside the
-`<tbody>` element. The table header should be inside `<thead>` and the
-table footer should be inside `<tfoot>`.
+row. So you should make sure (using the browser developer tools) that
+only data rows are inside the `<tbody>` element. The table header should
+be inside `<thead>` and the table footer should be inside `<tfoot>`.
 
 Once you've confirmed that, select all rows inside `<tbody>` using the
 [`find` function][jq-find]. The `find` function (like all jQuery
 selectors) returns a jQuery object, but you will want a regular array
-that you can sort. You can use the [`toArray` function][jq-toarray] to
-convert a jQuery object into a list of HTML elements. (Note: the
-elements in this list are not wrapped with jQuery. If you want to call
-jQuery methods on them, you will need to re-wrap them.) Then call the
-[JavaScript `sort` method][js-sort] on this array; you will need to
-pass a comparison function and are expected to read the documentation
-to understand how to do so. Once you have a sorted array you wrap it
-back into a jQuery object and then use the [`appendTo` method][jq-at]
-to append those rows back to the `<tbody>` element. This method moves
-elements from their old position to the end of some new element.
+that you can sort. You can use the [`toArray` function][jq-toarray] or
+`Array.from` functions to convert a jQuery object into a list of HTML
+elements. (Note: the elements in this list are native elements, not
+wrapped with jQuery. If you want to call jQuery methods on them, you
+will need to re-wrap them.) Then call the [JavaScript `sort`
+method][js-sort] on this array; you will need to pass a comparison
+function and are expected to read the documentation to understand how to
+do so. Once you have a sorted array you wrap it back into a jQuery
+object and then use the [`appendTo` method][jq-at] to append those rows
+back to the `<tbody>` element. This method moves elements from their old
+position to the end of some other element.
 
 [jq-find]: https://api.jquery.com/find/
 [jq-toarray]: https://api.jquery.com/toArray/
@@ -197,11 +157,11 @@ descending correctly. Make sure that you:
 - Use the last `<td>` in each row, not any of the other `<td>`
   elements or any non-`<td>` elements.
 - Get the text contents of the `<td>`, which should be a string like
-  "100"
+  "100%"
 - Convert the text contents into a number. For example, it's
   important that "100" is considered to be bigger than "2", even
-  though the string "2" is lexicographically later than the string
-  "100".
+  though the string "2%" is lexicographically later than the string
+  "100%".
 - If the string has a percentage sign (it should, on a student's
   profile) or a fraction sign (it should, on a TA's profile), you
   convert it to a number by taking everything up to the non-number
@@ -211,13 +171,13 @@ descending correctly. Make sure that you:
 - Sorting descending is not the same thing as sorting ascending, then
   reversing. Instead, you need to reverse the sign of the comparison
   function. (The difference happens when two rows have the same score.)
-  
+
 [js-mpf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseFloat
 
-Once you have written `make_table_sortable`, add a `script` tag to the
-assignments and profile pages to make the main table sortable. Make
-sure to give the script `type=module`.
-
+Once you have written `make_table_sortable`, add a `sortable` class to
+the template on the profile page. In `main.js`, find the table with this
+class and call `make_table_sortable` on it to make the main table
+sortable.
 
 Phase 3: Improving table sorting
 --------------------------------
@@ -225,8 +185,7 @@ Phase 3: Improving table sorting
 This initial sorting code works but has some flaws. Among them:
 
 - There's no way to restore the original sort order
-- There's no way to sort by another column, like the assignment due
-  date
+- It's not possible to sort the `assignments` page
 - There's no indication to the user what the current state is
 
 Let's fix them. First, let's make it possible to restore the original
@@ -251,33 +210,31 @@ should restore the original order.
 
 [jq-data]: https://api.jquery.com/data/
 
-Second, on the `assignments` page, let's add the ability to sort by
-the assignment due date. Modify the `assignments` template to add a
-`data-value` attribute to each `<td>` containing the due date. The
-value of the attribute should be the timestamp for the due date; you
-use [the `|date:"U"` Django filter][dj-date] to print a date as a
-timestamp. Timestamps are just numbers and can be compared for
-equality. Add the `sortable` class to all sortable `<th>` elements,
-which should be the final column on the profile page and then the
-final two columns on the assignments page.
+Second, on the `assignments` page, let's add the ability to sort by the
+assignment due date. Modify the `assignments` template to add a
+`data-value` attribute to each `<td>` containing the due date. The value
+of the attribute should be the timestamp for the due date; you use [the
+`|date:"U"` Django filter][dj-date] to print a date as a timestamp.
+Timestamps are just numbers and can be compared for equality. Add the
+`sortable` class to the table and the `sort-column` class to all
+sortable `<th>` elements, which should be the final column on the
+profile page and then the final two columns on the assignments page.
+Make all `sort-column` headers sortable in `make_table_sortable`.
 
 [dj-date]: https://docs.djangoproject.com/en/4.2/ref/templates/builtins/#date
 
-Modify the `make_table_sortable` function to make the due date table
-header cell sortable, if it's a table with a due date column. Clicking
-on that table header should:
+Specifically, clicking on a `sort-column` header inside a `sortable`
+table should:
 
 - Cycle the class on that table header from no class to `sort-asc` to
-  `sort-desc`, just like the last column
+  `sort-desc`
 - Clear the classes on all other columns (so only one column is sorted
   at a time)
-- Sort the relevant column in the relevant way.
+- Sort the relevant column in the relevant way
 
 A few hints that might make this easier. First, you can add a
 `data-value` attribute to the last column too. If you do this, you can
-use the same sorting code for all columns. Second, your code can
-assign a click event handler to all `sortable` table headers instad of
-special-casing the due-date and score columns. Finally, when a table
+use the same sorting code for all columns. Finally, when a table
 header column is clicked, you can figure out what number column it is
 using [the `index` method][jq-index]. You can then use [the `get`
 method][jq-get] to get the table cell with the same index in a table
@@ -294,16 +251,24 @@ an unsorted state, the original sort order is restored.
 Third, to give the user an indication of whether the text is sorted or
 not, add the following code to your CSS:
 
-    th.sortable { cursor: pointer; }
+    th.sort-column { cursor: pointer; }
     th.sort-asc::after { content: " \25b2"; }
     th.sort-desc::after { content: " \25bc"; }
-    
+
 The first line of CSS shows the "hand" cursor when hovering over
 sortable table headers, while the next two lines apply to all `<th>`
 elements that have the `sort-asc` or `sort-desc` classes, and add an
 up or down arrow to the table header contents. Test that there is now
 an arrow on table cells and that the arrow changes direction as you
 sort.
+
+Finally, let's also make the table sorting accessible. Modify your
+JavaScript code to add or remove [the `aria-sort` attribute][aria-sort]
+to a column header that's sorted. Also add `role=button` to the column
+header. This will hint to screen reader or other automated users that
+the column can be clicked and what its sort state is.
+
+[aria-sort]: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-sort
 
 Phase 4: Asynchronous file upload
 ---------------------------------
@@ -331,10 +296,11 @@ submitted again.
 [jq-submit]: https://api.jquery.com/submit/#on-%22submit%22-eventData-handler
 [mdn-disabled]: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled
 
-Inside the handler, construct a [`FormData` object][js-formdata] for
-the form. Then use [the `ajax` method][jq-ajax] to submit a `POST`
-request to your `submit` view containing that formdata. Specifically,
-in the `settings` argument of `ajax`, pass:
+Inside the handler, before disabling the file input, construct a
+[`FormData` object][js-formdata] for the form. Then use [the `ajax`
+method][jq-ajax] to submit a `POST` request to your `submit` view
+containing that formdata. Specifically, in the `settings` argument of
+`ajax`, pass:
 
 - The URL of the `submit` view as `url`
 - The `FormData` object as `data`
@@ -350,13 +316,13 @@ otherwise it won't work:
 - `false` as `contentType`
 - The form's `enctype` field as its `mimeType`
 
-Finally, pass `success` and `error` functions. The `error` function
-can just log an error message with `console.log`. The `success`
-function should replace the `<form>` element with some text like
-"Upload succeeded". You don't need to worry too much about what
-exactly this looks like; it is OK if it looks like of ugly. It is only
-important that there is some visual indication that the upload
-succeeded.
+Finally, pass `success` and `error` functions. The `error` function can
+just log an error message with `console.log` and re-enable the input
+field / button (in case the user wants to try again). The `success`
+function should replace the `<form>` element with some text like "Upload
+succeeded". You don't need to worry too much about what exactly this
+looks like; it is OK if it looks like of ugly. It is only important that
+there is some visual indication that the upload succeeded.
 
 You may still get errors about the CSRF token. You may need to add a
 header, as described [here](https://docs.djangoproject.com/en/4.2/howto/csrf/#setting-the-token-on-the-ajax-request).
@@ -426,13 +392,11 @@ grade" cell in the footer with the final grade, formatted as a
 percentage.
 
 Fifth, call this grade-computation function every time you switch
-between states and also any time [the `change` event][jq-change]
-is fired on one of the new input elements. It should now be possible
-to hypothesize a grade for a particular assignment, click somewhere
-else on the page (so the input element is no longer focused) and see
-the final grade update.
+between states and also any time [the `keyup` event][jq-keyup] is fired
+on one of the new input elements. You should see the final grade update
+as you type.
 
-[jq-change]: https://api.jquery.com/change/
+[jq-keyup]: https://api.jquery.com/keyup/
 
 Test your work. You should be able to:
 
@@ -445,9 +409,8 @@ Test your work. You should be able to:
   Django.
 - Clicking "Actual grades" should make input boxes disappear. The
   original text, "Ungraded" or "Not Due", should reappear.
-- Typing into an input box and then clicking elsewhere should cause
-  the final grade to update.
-  
+- Typing into an input box should cause the final grade to update.
+
 Double-check that you compute final grades correctly. In particular,
 make sure you intepret what the user types in as a percentage, not as
 a point value or as a fraction of the weight.
@@ -506,18 +469,16 @@ interesting and the most difficult aspect of this assignment. Don't
 just make them a single sentence; the instructors use your answers to
 make these assignments more interesting and easier.
 
-Once you are done, commit everything and push it to Github. **Make
-sure to include the text "Please grade" in your final commit message**
-to help TAs identify the right commit to grade.
+Once you are done, commit everything and push it to Github.
 
 How you will use this
 ---------------------
 
-This is a fairly rudimentary set of front-end interactions, with a lot
-of sharp edges, like minimal error checking on the form upload and not
-enough indication to the user what table columns are sortable.
-Nonetheless, you've probably seen these interactions many times, and
-they are important for making websites easier to use.
+This is a fairly rudimentary set of front-end interactions, with sharp
+edges like minimal error checking on the form upload and not enough
+indication to the user what table columns are sortable. Nonetheless,
+you've probably seen these interactions many times, and they are
+important for making websites easier to use.
 
 Basic interactions like table sorting are often provided by libraries;
 for example the [Sortable library][sortable] provides a sortable
