@@ -418,7 +418,7 @@ We also want to make sure file uploads do not harm our server. We
 should already be putting those files in a separate `uploads/` folder,
 which is a good start. (We will make sure never to store anything
 important or sensitive in here.) Let's also limit uploaded files to
-64MiB. In your `submit` controller, test the `size` field of the
+64MiB. In your `assignment` controller, test the `size` field of the
 uploaded file. If it is too large (that is, over 64 MiB), do not save
 the uploaded file in the submission. Instead, re-render the assignment
 page with an error message. Put the error message in an `<output>`
