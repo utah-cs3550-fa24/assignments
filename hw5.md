@@ -343,10 +343,10 @@ should show up bold and red.
 
 [docs-upt]: https://docs.djangoproject.com/en/4.2/topics/auth/default/#django.contrib.auth.decorators.user_passes_test
 
-Before rendering the login page *or* redirecting to the `next`
-parameter, we need to make sure this URL is to our own server;
-otherwise we'd have an "open redirect" vulnerability. This is a little
-tricky; the code needs to look like this:
+Before redirecting to the `next` parameter, we need to make sure this
+URL is to our own server; otherwise we'd have an "open redirect"
+vulnerability. This is a little tricky; the code needs to look like
+this:
 
 ```
 def login_form(request):
