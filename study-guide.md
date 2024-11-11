@@ -189,7 +189,7 @@ Security
 You should be able to describe simple security policies in terms
 of which users can perform which actions. You should be able to
 explain cookies, identity, and session data. You should be able to
-describe, at a high level, how user log ins work via sessions and
+describe, at a high level, how user logins work via sessions and
 cookie. You should be able to define authorization and authentication. 
 
 You should be able to use `request.user`, `authenticate`, `login`, and
@@ -211,22 +211,22 @@ JavaScript
 
 You should be able to include JavaScript into an HTML page. You should
 know the syntax of a `<script>` tag, how to write inline JS, and what
-the `defer` and `async` parameters do. You should also know what
-`type=module` does, at least at a high level (allows `import`,
-separate namespace). You should be able to explain the idea of
-progressive enhancement.
+the `defer` parameter does. You should also know what `type=module`
+does, at least at a high level (allows `import`, separate namespace).
+You should be able to explain the idea of progressive enhancement.
 
 You should be comfortable with basic JavaScript syntax. You should
 also know what to avoid: type mixing, accidental globals, `var`
 declarations, `for` loops with undeclared or `var`-declared variables,
-`for`/`in` loops, `function` inline functions. You should know
-`Arrays.from` and the difference between arrays and array-like objects.
-You should be able to identify bugs arising from the use of `this` and
-be able to fix them by switching to arrow functions.
+`for`/`in` loops, `function` inline functions, and the `this`
+variable. You should know `Arrays.from` and the difference between
+arrays and array-like objects.
 
 You should be able to use jQuery's `$` for wrapping, selecting, and
-creating elements. You should be able to use the following jQuery APIs
-for manipulating elements:
+creating elements. You should have an idea what APIs require unwrapped
+elements (like `e.target`) and which expect jQuery APIs and how to
+wrap (`$`) and unwrap (`Array.from`). You should be able to use the
+following jQuery APIs for manipulating elements:
 
 - `append`, `prepend`, `before`, `after`, `remove`, `replace`
 - `addClass`, `removeClass`, `val`, `attr`
@@ -248,50 +248,49 @@ Deploy
 ------
 
 You should be able to identify the parts of a URL: the protocol (or
-scheme), hostname (or domain), port, and path (or page).
-
-You should know rough orders of magnitude for how many websites there
-are and how many internet users there are. You should know how old the
-internet and the web are (to within the decade). You should be able to
-explain the difference between the internet and the web. You should be
-able to list the most common web browsers.
-
-You should be able to explain the relationship between hostnames (also
-called domains), IP addresses, and packet routes. You should be able
-to give examples of each. You should also be familiar with what kind
-of information is provided by 1) DNS lookup tools; 2) IP lookup tools;
-3) traceroute.
+scheme), hostname (or domain), port, and path (or page). You should be
+able to explain the relationship between hostnames (also called
+domains), IP addresses, and packet routes. You should be able to give
+examples of each. You should also be familiar with what kind of
+information is provided by 1) DNS lookup tools; 2) IP lookup tools; 3)
+traceroute.
 
 You should be able to explain the role of a registrar. You should know
 what A and AAAA records do in DNS. You should be able to give the
 price, within an order of magnitude, of a domain ($5-20/yr), an IPv4
-address ($40-60), an IPv6 address ($0), inbound bandwidth ($0),
+address ($30-50), an IPv6 address ($0), inbound bandwidth ($0),
 outbound traffic ($50-100/TB), and an HTTPS certificate ($0). You
 should be able to explain why you need an IPv4 address.
 
-You should be able to name the top three could providers. You should
-be able to explain the difference between a "virtualized" and
-"bare-metal" cloud computer. You should be able to name some key cloud
-computing instance parameters, such as CPU architecture, CPU cores,
-available memory, available disk, and available accelerators like
-GPUs.
+You should know rough orders of magnitude for how many websites there
+are and how many internet users there are. You should be able to list
+the most common web browsers. You should be able to name the top three
+could providers.
+
+You should be able to explain the difference between a "virtualized"
+and "bare-metal" cloud computer. You should be able to name some key
+cloud computing instance parameters, such as CPU architecture, CPU
+cores, available memory, available disk, and available accelerators
+like GPUs.
 
 You should be able to explain the roles of AWS and its EC2 and Elastic
 IP services. You should be give the cost, within an order of
 magnitude, of the deployment you were asked to create as part of
-Assignment 4 (about $9/mo). You should be able to explain the terms
+Assignment 7 (about $9/mo). You should be able to explain the terms
 "instance" and "instance type".
 
 You should be able to define a Service Level Agreement and explain
-what a "two nines" or "five nines" availability level means. You
-should be able to explain the benefits of operating redundant services
-in multiple regions.
+what a "two nines" or "five nines" availability level means, and be
+able to estimate how much downtime per year that means. (One nine:
+weeks; two nines: days; three nines: minutes; four nines: a minute;
+five nines: seconds.) You should be able to explain the benefits of
+operating redundant services in multiple regions.
 
 You should be able describe briefly what Linux, SystemD, APT, SSH,
 BASH, and JournalCtl do. You should be able to explain the role of the
-gateway server and name popular gateway servers. You should be
-able to explain the role of the database server and name popular
-database servers.
+gateway server and name popular gateway servers (Apache, NGINX,
+Caddy). You should be able to explain the role of the database server
+and name popular database servers (MySQL, SQL Server, Postgres).
 
 You should be able to explain what the `DEBUG` and `ALLOWED_HOSTS`
 settings in Django do and why they differ between development and
