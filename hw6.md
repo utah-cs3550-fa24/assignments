@@ -48,7 +48,7 @@ get help.
 Next, we will download the jQuery library that we will be using. In
 the root of your repository, execute the following command:
 
-    git submodule add -b 4.0.0-beta https://github.com/jquery/jquery static/jquery
+    git submodule add https://github.com/jquery/jquery static/jquery
 
 This will download a recent version of jQuery to a folder named
 `jquery` inside your `static` folder. It should take about a minute to
