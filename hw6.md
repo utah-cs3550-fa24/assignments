@@ -33,11 +33,11 @@ all other templates) and add the following lines to it:
 
     <script type=module src="/static/main.js"></script>
 
-Note that we are including the script as a "JavaScript
-module". We'll be using JavaScript modules in this class for our
-JavaScript code. Modules (often called "ES6 modules" after the version
-of JavaScript where they were introduced) are a relatively new feature
-and you'll see a lot of older JavaScript tutorials not use them.
+Note that we are including the script as a "JavaScript module". We'll
+be using JavaScript modules in this class for our JavaScript code.
+Modules (often called "ES6 modules" after the version of JavaScript
+where they were introduced) are a relatively new feature and you'll
+see a lot of older JavaScript tutorials not use them.
 
 Run your server and visit a page. (Since you edited `header.html`, any
 page should do.) Open the browser developer console. You should see
@@ -89,8 +89,8 @@ autotester. If you do, you are done with Phase 1.
 Phase 2: Sorting and filtering
 ------------------------------
 
-The `profile` view for students contains a table. The
-right-most column of the table is a column of numbers (mostly). We want to add
+The `profile` view for students contains a table. The right-most
+column of the table is a column of numbers (mostly). We want to add
 the ability to click on that column to sort by it; clicking once
 should sort it in ascending order (later rows are bigger), and
 clicking again should sort it in descending order (later rows are
