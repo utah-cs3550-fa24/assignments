@@ -30,7 +30,7 @@ As well as homework assignments:
   Due 18 Oct and 25 Oct.
 * [Homework 5 (Users and Permissions)](hw5.md) \
   Due 1 Nov and 8 Nov.
-* Homework 6 (JavaScript) \
+* [Homework 6 (JavaScript)](hw6.md) \
   Currently copied from last year. \
   Due 15 Nov and 22 Nov.
 * Homework 7 (AWS) \

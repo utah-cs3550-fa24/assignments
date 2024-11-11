@@ -1,7 +1,7 @@
 CS 3550 Assignment 6 (JavaScript)
 =================================
 
-**Status**: Draft \
+**Status**: Final \
 **Due**: Phase 1 due **15 Nov**, Phase 2--5 due **22 Nov**
 
 About
