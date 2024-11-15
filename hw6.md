@@ -97,8 +97,8 @@ clicking again should sort it in descending order (later rows are
 smaller).
 
 Define a function called `make_table_sortable`. It should take one
-argument (a `<table>` element wrapped with jQuery) and modify it to
-make it sortable. The rest of this phase explains how to do so.
+argument (a jQuery `<table>` element) and modify it to make it
+sortable. The rest of this phase explains how to do so.
 
 First, the `make_table_sortable` function should select the last
 header cell in the table header. You will need to add a `click`
@@ -110,7 +110,7 @@ or sorted descending. We'll save the table's current state by making
 this last table header cell have the class `sort-asc`, `sort-desc`, or
 neither.
 
-When the table cell is clicked (that is, inside the click handler),
+When the table cell is clicked (that is, inside its click handler),
 use jQuery's [class attribute methods][jq-class] to determine what
 state the table is in. If it's unsorted or sorted descending, make it
 instead sorted ascending. If it's sorted ascending, make it sorted
@@ -175,7 +175,7 @@ descending correctly. Make sure that you:
 [js-mpf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseFloat
 
 Once you have written `make_table_sortable`, add a `sortable` class to
-the template on the profile page. In `main.js`, find the table with this
+the table on the profile page. In `main.js`, find the table with this
 class and call `make_table_sortable` on it to make the main table
 sortable.
 
@@ -185,7 +185,7 @@ Phase 3: Improving table sorting
 This initial sorting code works but has some flaws. Among them:
 
 - There's no way to restore the original sort order
-- It's not possible to sort the `assignments` page
+- It's not possible to sort the `index` page
 - There's no indication to the user what the current state is
 
 Let's fix them. First, let's make it possible to restore the original
@@ -210,16 +210,16 @@ should restore the original order.
 
 [jq-data]: https://api.jquery.com/data/
 
-Second, on the `assignments` page, let's add the ability to sort by the
-assignment due date. Modify the `assignments` template to add a
-`data-value` attribute to each `<td>` containing the due date. The value
-of the attribute should be the timestamp for the due date; you use [the
+Second, on the `index` page, let's add the ability to sort by the
+assignment due date. Modify the `index` template to add a `data-value`
+attribute to each `<td>` containing the due date. The value of the
+attribute should be the timestamp for the due date; you use [the
 `|date:"U"` Django filter][dj-date] to print a date as a timestamp.
-Timestamps are just numbers and can be compared for equality. Add the
+Timestamps are just numbers and can be compared as numbers. Add the
 `sortable` class to the table and the `sort-column` class to all
 sortable `<th>` elements, which should be the final column on the
-profile page and then the final two columns on the assignments page.
-Make all `sort-column` headers sortable in `make_table_sortable`.
+profile page and then the final two columns on the index page. Make
+all `sort-column` headers sortable in `make_table_sortable`.
 
 [dj-date]: https://docs.djangoproject.com/en/4.2/ref/templates/builtins/#date
 
@@ -280,27 +280,23 @@ be distracting. Let's instead make that form submit synchronously.
 
 Define a `make_form_async` function in `main.js`. This function should
 take in a jQuery-wrapped `<form>` element and make it submit itself
-asynchronously. In the `assignment` view, add a `<script>` tag to
-invoke the `make_form_async` function on the submission form element.
-Keep in mind that some assignment pages don't have submission forms,
-like the TA view or when an assignment is past due.
+asynchronously. Invoke the `make_form_async` function on the
+submission form element on the `assignment` page, but not on any other
+forms. (You might use a special class for this.) Keep in mind that
+some assignment pages don't have submission forms, like the TA view or
+when an assignment is past due.
 
 Inside `make_form_async`, add [`submit` handler][jq-submit]. This
 handler should call [the `preventDefault` method][jq-pd] to prevent
-the form from being submitted normally. It should then set [the
-`disabled` attribute][mdn-disabled] on the file input and button in
-the form, so that the file cannot be changed and the form cannot be
-submitted again.
+the form from being submitted normally.
 
 [jq-pd]: https://api.jquery.com/event.preventDefault/
 [jq-submit]: https://api.jquery.com/submit/#on-%22submit%22-eventData-handler
-[mdn-disabled]: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled
 
-Inside the handler, before disabling the file input, construct a
-[`FormData` object][js-formdata] for the form. Then use [the `ajax`
-method][jq-ajax] to submit a `POST` request to your `submit` view
-containing that formdata. Specifically, in the `settings` argument of
-`ajax`, pass:
+Inside the handler, construct a [`FormData` object][js-formdata] for
+the form. Then use [the `ajax` method][jq-ajax] to submit a `POST`
+request to your `submit` view containing that formdata. Specifically,
+in the `settings` argument of `ajax`, pass:
 
 - The URL of the `submit` view as `url`
 - The `FormData` object as `data`
@@ -316,21 +312,29 @@ otherwise it won't work:
 - `false` as `contentType`
 - The form's `enctype` field as its `mimeType`
 
-Finally, pass `success` and `error` functions. The `error` function can
-just log an error message with `console.log` and re-enable the input
-field / button (in case the user wants to try again). The `success`
-function should replace the `<form>` element with some text like "Upload
-succeeded". You don't need to worry too much about what exactly this
-looks like; it is OK if it looks like of ugly. It is only important that
-there is some visual indication that the upload succeeded.
+After the `$.ajax` call, set [the `disabled` attribute][mdn-disabled]
+on the file input and button in the form, so that the file cannot be
+changed and the form cannot be submitted again.
 
-You may still get errors about the CSRF token. You may need to add a
+[mdn-disabled]: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled
+
+Finally, write `success` and `error` callbacks for the `$.ajax` call.
+(You can use `await` instead if you'd like, but it's probably more
+confusing that way.) The `error` callback can just log an error
+message with `console.log` and re-enable the input field / button (in
+case the user wants to try again). The `success` callback should
+replace the `<form>` element with some text like "Upload succeeded".
+You don't need to worry too much about what exactly this looks like;
+it is OK if it looks like of ugly. It is only important that there is
+some visual indication that the upload succeeded.
+
+You may still get errors about CSRF tokens. You may need to add a
 header, as described [here](https://docs.djangoproject.com/en/4.2/howto/csrf/#setting-the-token-on-the-ajax-request).
 
 (Of course, a proper implementation would, for example, update the
 page to link to the uploaded document, so that it would look identical
-to refreshing the page. However, in this assignment we're not testing
-that.)
+to refreshing the page. However, in this assignment we're not going
+that far.)
 
 Phase 5: Hypothesizing grades
 -----------------------------
@@ -354,7 +358,8 @@ grade on that assignment. Implement this interaction.
 Start by adding a `make_grade_hypothesized` function to `main.js`.
 Just like `make_table_sortable` or `make_form_async`, it should take a
 jQuery-wrapped `<table>` element as an argument and add the
-"Hypothesize" button and all its behavior.
+"Hypothesize" button and all its behavior. Call it for the profile
+view, only for students.
 
 First, thing the `make_grade_hypothesized` function should create a
 `<button>` element and add it to the document before the `<table>`.
