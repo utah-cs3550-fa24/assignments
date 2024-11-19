@@ -33,8 +33,7 @@ As well as homework assignments:
 * [Homework 6 (JavaScript)](hw6.md) \
   Currently copied from last year. \
   Due 15 Nov and 22 Nov.
-* Homework 7 (AWS) \
-  Currently copied from last year. \
+* [Homework 7 (AWS)](hw7.md) \
   Due 29 Nov and 6 Dec.
 
 Assignments marked "draft" should be quite close to their final
