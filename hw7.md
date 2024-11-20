@@ -128,8 +128,7 @@ like so:
 
     mydomain.whatever
 
-As long as that that domain has a TXT record containing your Github
-username, you've passed this phase. It's not autograded.
+As long as that that domain has a TXT record containing your name, you've passed this phase. It's not autograded.
 
 
 Phase 2: AWS and EC2
