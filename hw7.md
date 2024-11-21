@@ -8,7 +8,7 @@ About
 -----
 
 In this assignment you'll deploy your grading application using AWS
-EC2. The grading application will then become publically accessible.
+EC2. The grading application will then become publicly accessible.
 Specifically, you will:
 
 - Purchase a domain name
@@ -779,7 +779,7 @@ task compute service, and many others. Larger web applications would
 make use of these services, both to improve performance and also to
 reduce costs; some are covered in CS 4550.
 
-Grading Rubrik
+Grading Rubric
 --------------
 
 This assignment is worth 100 points. The different phases are worth
