@@ -614,8 +614,8 @@ After that line, add these lines:
 
     CSRF_TRUSTED_ORIGINS = [
       'http://XX.XX.XX.XX',
-      'http://*.mydomain.whatever,
-      'https://*.mydomain.whatever,
+      'http://*.mydomain.whatever',
+      'https://*.mydomain.whatever',
     ]
 
 This is necessary for form submissions to work. Note that a normal
