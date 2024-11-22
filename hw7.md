@@ -404,7 +404,15 @@ rebooted, which is convenient if you need to pause your work.
 
 Next, install Django:
 
-    python3 -m pip install django
+    python3 -m pip install --break-system-packages django
+    
+The scary `--break-system-packages` flag installs the `django` package
+system-wide. If you were deploying several Django services on one
+machine, you wouldn't want to do this (you'd use [virtual
+environments][venv]) but for our simple deployment installing
+system-wide is OK.
+
+[venv]: https://docs.python.org/3/library/venv.html
 
 Run the following command to make sure this worked:
 
