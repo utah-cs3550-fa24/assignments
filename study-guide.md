@@ -151,7 +151,7 @@ Forms
 =====
 
 **Forms** You should know how to make a valid HTML form, including the
-`<form>`, `<label>`, `<input>`, `<button>`, and `<output`> elements.
+`<form>`, `<label>`, `<input>`, `<button>`, and `<output>` elements.
 You should know what the `action`, `method`, and `enctype` parameters
 do on forms, and be able explain the difference between the `get` and
 `post` values for `method` and choose the right one for various forms.
@@ -244,8 +244,8 @@ be able to handle errors using the `error` callback. You should be
 able to use `$.ajax` as a promise with `await`. You should be know how
 to move `await` calls later in the code to enable more parallelism.
 
-Deploy
-------
+Cloud Deployments
+=================
 
 You should be able to identify the parts of a URL: the protocol (or
 scheme), hostname (or domain), port, and path (or page). You should be
@@ -275,5 +275,5 @@ between development and deployment.
 
 You should be able to define RPS and give RPS estimates for smaller
 (10-30 for a `t3.medium`) and larger instances (100-200 for a
-`c5.large`). You should be able to explain what auto-scaling is.
+`c5.large`). You should be able to explain AMIs and auto-scaling.
 

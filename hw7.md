@@ -582,16 +582,9 @@ down your Django application, just like when you're debugging locally.
 
 With the Django application running, open up a regular web browser and
 visit http://XX.XX.XX.XX/ as usual. You should see your application
-running and showing the list of assignments!
-
-Make sure that the stylesheet, favicon, images, and links all work
-correctly (except submission links, which we don't require to work in
-this assignment). If one of them doesn't, check that you haven't
-hard-coded `localhost:8000` into any of your HTML files. All links in
-your application should be to host-relative URLs which start with a
-forward slash (`/`). If you find any broken URLs, fix them in your
-local copy of the code. Then upload the new source code by re-running
-the `scp` (or `pscp`) command and rerun the `runserver` command.
+running and showing the login screen! However, logging in won't
+actually work yet, because we need to switch to a proper production
+setup. Let's do that next.
 
 Phase 5: Setting up your domain with HTTPS
 ------------------------------------------
@@ -698,6 +691,18 @@ succeeded. Run the following:
     sudo systemctl restart nginx
 
 Check that you can now visit your domain using `https`.
+
+# Finishing up
+
+Make sure that the stylesheet, favicon, images, and links all work
+correctly (except submission links, which we don't require to work in
+this assignment). If one of them doesn't, check that you haven't
+hard-coded `localhost:8000` into any of your HTML files. All links in
+your application should be to host-relative URLs which start with a
+forward slash (`/`). If you find any broken URLs, fix them in your
+local copy of the code. Then upload that file (but not all the files,
+so as not to overwrite `settings.py`) and rerun the `runserver`
+command.
 
 Write a cover sheet
 -------------------
