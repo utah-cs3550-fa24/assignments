@@ -571,7 +571,7 @@ directory name.
 
 # Running your application
 
-Now do the following:
+Now do the following *on your EC2 server*:
 
     cd cs3550
     python3 manage.py runserver

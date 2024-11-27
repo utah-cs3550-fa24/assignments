@@ -148,7 +148,7 @@ covered in class before the midterm was assessed.
 ----------------------------------------------------
 
 Forms
-=====
+-----
 
 **Forms** You should know how to make a valid HTML form, including the
 `<form>`, `<label>`, `<input>`, `<button>`, and `<output>` elements.

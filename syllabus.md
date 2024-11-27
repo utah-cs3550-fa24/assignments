@@ -116,9 +116,9 @@ The following is an aspirational course schedule. It may change as the course pr
 | October 28    | Security                       |
 | November 4    | JavaScript, **Homework 5 due** |
 | November 11   | AJAX                           |
-| November 18   | Networking, **Homework 6 due** |
-| November 25   | Cloud computing                |
-| December 2    | Conclusion, **Homework 7 due** |
+| November 18   | Cloud, **Homework 6 due**      |
+| November 25   | Scaling                        |
+| December 2    | Review, **Homework 7 due**     |
 | December 9    | **Final**                      |
 
 # Policies
