@@ -128,7 +128,16 @@ like so:
 
     mydomain.whatever
 
-As long as that that domain has a TXT record containing your name, you've passed this phase. It's not autograded.
+This phase is (now) autograded; if you see a green checkmark, you are
+done.
+
+In some cases the autograder might have the wrong name on file and you
+might fail, through no fault of your own. The autograder is using
+Canvas names but those don't always match other names the University
+has on file for you. In this case, the autograder's output will tell
+you what name it's expecting; please change the TXT record to match
+(after which you should pass) or email the instructors if that doesn't
+work.
 
 
 Phase 2: AWS and EC2
